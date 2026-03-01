@@ -11,6 +11,7 @@ import '../../../../core/utils/app_formatters.dart';
 import '../../data/providers/simulation_providers.dart';
 import '../../domain/models/simulation_input.dart';
 import '../../domain/models/simulation_result.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../widgets/shared_widgets.dart';
 
 /// Screen 3 — "Scenario Comparison"
@@ -54,6 +55,7 @@ class _ComparisonScreenState extends ConsumerState<ComparisonScreen> {
   }
 
   void _showSetupBottomSheet(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -66,7 +68,7 @@ class _ComparisonScreenState extends ConsumerState<ComparisonScreen> {
           Navigator.pop(context);
           await ref.read(scenariosProvider.notifier).runScenarioB(
                 input,
-                name: 'Optimized Path',
+                name: l10n.optimizedLabel,
               );
         },
       ),
@@ -89,6 +91,7 @@ class _ComparisonDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final savingsDiff = (scenarioB.savings10Y - scenarioA.savings10Y) /
         scenarioA.savings10Y.abs();
     final healthDiff = (scenarioB.healthScore10Y - scenarioA.healthScore10Y) /
@@ -105,7 +108,7 @@ class _ComparisonDashboard extends StatelessWidget {
             snap: true,
             automaticallyImplyLeading: false,
             title: Text(
-              'Scenario Comparison',
+              l10n.comparisonTitle,
               style: AppTextStyles.headlineSmall,
             ),
             actions: [
@@ -131,7 +134,7 @@ class _ComparisonDashboard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _ScenarioSummaryCard(
-                        label: 'SCENARIO A',
+                        label: l10n.scenarioLabel('A'),
                         name: scenarioA.name,
                         savings10Y: scenarioA.savings10Y,
                         currency: scenarioA.currency,
@@ -142,7 +145,7 @@ class _ComparisonDashboard extends StatelessWidget {
                     const SizedBox(width: AppConstants.spacingM),
                     Expanded(
                       child: _ScenarioSummaryCard(
-                        label: 'SCENARIO B',
+                        label: l10n.scenarioLabel('B'),
                         name: scenarioB.name,
                         savings10Y: scenarioB.savings10Y,
                         currency: scenarioB.currency,
@@ -164,7 +167,7 @@ class _ComparisonDashboard extends StatelessWidget {
                 const SizedBox(height: AppConstants.spacingL),
 
                 Text(
-                  'Detailed Impact',
+                  l10n.detailedImpact,
                   style: AppTextStyles.headlineMedium,
                 ).animate(delay: 300.ms).fadeIn(),
 
@@ -174,7 +177,7 @@ class _ComparisonDashboard extends StatelessWidget {
                 _ImpactRow(
                   icon: Icons.savings_rounded,
                   iconColor: AppColors.accentGreen,
-                  label: 'Monthly Savings',
+                  label: l10n.monthlySavingsLabel,
                   valueA: AppFormatters.abbreviate(scenarioA.monthlySavings,
                       currencyCode: scenarioA.currency),
                   valueB: AppFormatters.abbreviate(scenarioB.monthlySavings,
@@ -189,7 +192,7 @@ class _ComparisonDashboard extends StatelessWidget {
                 _ImpactRow(
                   icon: Icons.fitness_center_rounded,
                   iconColor: AppColors.accentAmber,
-                  label: 'Health Index',
+                  label: l10n.healthIndexLabel,
                   valueA: AppFormatters.score(scenarioA.healthScore10Y),
                   valueB: AppFormatters.score(scenarioB.healthScore10Y),
                   diffPercent: healthDiff,
@@ -202,9 +205,9 @@ class _ComparisonDashboard extends StatelessWidget {
                 _ImpactRow(
                   icon: Icons.school_rounded,
                   iconColor: AppColors.accentCyan,
-                  label: 'Knowledge Growth',
-                  valueA: 'Linear',
-                  valueB: 'Exponential',
+                  label: l10n.knowledgeGrowthLabel,
+                  valueA: l10n.linear,
+                  valueB: l10n.exponential,
                   diffPercent:
                       (scenarioB.studyHours10Y - scenarioA.studyHours10Y) /
                           (scenarioA.studyHours10Y == 0
@@ -219,7 +222,7 @@ class _ComparisonDashboard extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: PrimaryButton(
-                    label: 'Switch to Optimized Path',
+                    label: l10n.switchToOptimized,
                     icon: Icons.rocket_launch_rounded,
                     gradient: AppColors.cyanGradient,
                     onPressed: onSwitchToB,
@@ -257,12 +260,13 @@ class _ScenarioSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GlassCard(
-      borderColor: color.withOpacity(0.3),
+      borderColor: color.withValues(alpha: 0.3),
       gradient: LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: [color.withOpacity(0.12), AppColors.cardBackground],
+        colors: [color.withValues(alpha: 0.12), AppColors.cardBackground],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,7 +290,7 @@ class _ScenarioSummaryCard extends StatelessWidget {
             style: AppTextStyles.moneyMedium,
           ),
           const SizedBox(height: 2),
-          Text('Net Worth @ 10yrs', style: AppTextStyles.bodySmall),
+          Text(l10n.netWorthAt10, style: AppTextStyles.bodySmall),
         ],
       ),
     );
@@ -306,6 +310,7 @@ class _DualLineChartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final spotsA = scenarioA.yearlySnapshots
         .map((s) => FlSpot(s.year.toDouble(), s.savings))
         .toList();
@@ -327,16 +332,17 @@ class _DualLineChartCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '10-Year Projections',
+                l10n.tenYearProjections,
                 style: AppTextStyles.headlineSmall,
               ),
               Row(
                 children: [
-                  _LegendDot(color: AppColors.primary, label: 'Current'),
+                  _LegendDot(
+                      color: AppColors.primary, label: l10n.currentLabel),
                   const SizedBox(width: 12),
                   _LegendDot(
-                      color: AppColors.accentCyan.withOpacity(0.8),
-                      label: 'Optimized',
+                      color: AppColors.accentCyan.withValues(alpha: 0.8),
+                      label: l10n.optimizedLabel,
                       isDashed: true),
                 ],
               ),
@@ -373,11 +379,7 @@ class _DualLineChartCard extends StatelessWidget {
                       showTitles: true,
                       interval: 4.5,
                       getTitlesWidget: (v, _) => Text(
-                        v == 1
-                            ? 'Year 1'
-                            : v.toInt() == 5
-                                ? 'Year 5'
-                                : 'Year 10',
+                        l10n.yearCountLabel(v.toInt()),
                         style: AppTextStyles.labelSmall,
                       ),
                     ),
@@ -397,8 +399,8 @@ class _DualLineChartCard extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          AppColors.primary.withOpacity(0.2),
-                          AppColors.primary.withOpacity(0),
+                          AppColors.primary.withValues(alpha: 0.2),
+                          AppColors.primary.withValues(alpha: 0),
                         ],
                       ),
                     ),
@@ -417,8 +419,8 @@ class _DualLineChartCard extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          AppColors.accentCyan.withOpacity(0.1),
-                          AppColors.accentCyan.withOpacity(0),
+                          AppColors.accentCyan.withValues(alpha: 0.1),
+                          AppColors.accentCyan.withValues(alpha: 0),
                         ],
                       ),
                     ),
@@ -495,7 +497,7 @@ class _ImpactRow extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: iconColor.withOpacity(0.12),
+              color: iconColor.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: iconColor, size: 20),
@@ -552,6 +554,7 @@ class _NoScenarioView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Center(
@@ -567,13 +570,13 @@ class _NoScenarioView extends StatelessWidget {
               ),
               const SizedBox(height: AppConstants.spacingL),
               Text(
-                'Run a simulation first to compare scenarios.',
+                l10n.runSimFirst,
                 style: AppTextStyles.bodyLarge,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppConstants.spacingXL),
               PrimaryButton(
-                label: 'Go to Simulation',
+                label: l10n.goToSimulation,
                 icon: Icons.auto_graph_rounded,
                 onPressed: onGoToSimulation,
               ),
@@ -598,12 +601,13 @@ class _SetupScenarioBView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
         title: Text(
-          'Scenario Comparison',
+          l10n.comparisonTitle,
           style: AppTextStyles.headlineSmall,
         ),
         automaticallyImplyLeading: false,
@@ -613,7 +617,7 @@ class _SetupScenarioBView extends StatelessWidget {
         child: Column(
           children: [
             _ScenarioSummaryCard(
-              label: 'SCENARIO A',
+              label: l10n.scenarioLabel('A'),
               name: scenarioA.name,
               savings10Y: scenarioA.savings10Y,
               currency: scenarioA.currency,
@@ -622,7 +626,7 @@ class _SetupScenarioBView extends StatelessWidget {
             ),
             const Spacer(),
             GlassCard(
-              borderColor: AppColors.primary.withOpacity(0.3),
+              borderColor: AppColors.primary.withValues(alpha: 0.3),
               child: Column(
                 children: [
                   const Icon(
@@ -632,12 +636,12 @@ class _SetupScenarioBView extends StatelessWidget {
                   ),
                   const SizedBox(height: AppConstants.spacingM),
                   Text(
-                    'Add Scenario B',
+                    l10n.addScenarioB,
                     style: AppTextStyles.headlineMedium,
                   ),
                   const SizedBox(height: AppConstants.spacingS),
                   Text(
-                    'Set up a second scenario with different\nhabits to compare outcomes.',
+                    l10n.setupScenarioBSub,
                     style: AppTextStyles.bodyMedium,
                     textAlign: TextAlign.center,
                   ),
@@ -648,7 +652,7 @@ class _SetupScenarioBView extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: PrimaryButton(
-                label: 'Setup Scenario B',
+                label: l10n.addScenarioB,
                 icon: Icons.add_rounded,
                 onPressed: onRunScenarioB,
               ),
@@ -682,6 +686,7 @@ class _ScenarioBInputSheetState extends State<_ScenarioBInputSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: EdgeInsets.only(
         left: AppConstants.spacingM,
@@ -706,16 +711,16 @@ class _ScenarioBInputSheetState extends State<_ScenarioBInputSheet> {
               ),
             ),
             const SizedBox(height: AppConstants.spacingL),
-            Text('Setup Scenario B', style: AppTextStyles.headlineLarge),
+            Text(l10n.setupScenarioBTitle, style: AppTextStyles.headlineLarge),
             const SizedBox(height: AppConstants.spacingS),
             Text(
-              'Enter your optimized daily habits.',
+              l10n.enterOptimizedHabits,
               style: AppTextStyles.bodyMedium,
             ),
             const SizedBox(height: AppConstants.spacingL),
 
             // Income
-            Text('Monthly Income: \$${_income.toInt()}',
+            Text(l10n.incomeValueLabel(r'$', _income.toInt()),
                 style: AppTextStyles.labelLarge),
             Slider(
               value: _income,
@@ -726,7 +731,7 @@ class _ScenarioBInputSheetState extends State<_ScenarioBInputSheet> {
             ),
 
             // Saving %
-            Text('Saving: ${(_saving * 100).toInt()}%',
+            Text(l10n.savingValueLabel((_saving * 100).toInt()),
                 style: AppTextStyles.labelLarge),
             Slider(
               value: _saving,
@@ -737,7 +742,7 @@ class _ScenarioBInputSheetState extends State<_ScenarioBInputSheet> {
             ),
 
             // Study hours
-            Text('Study: ${_study.toStringAsFixed(1)} hrs/day',
+            Text(l10n.studyValueLabel(_study.toStringAsFixed(1)),
                 style: AppTextStyles.labelLarge),
             Slider(
               value: _study,
@@ -748,7 +753,7 @@ class _ScenarioBInputSheetState extends State<_ScenarioBInputSheet> {
             ),
 
             // Workout days
-            Text('Workout: $_workout days/week',
+            Text(l10n.workoutValueLabel(_workout),
                 style: AppTextStyles.labelLarge),
             Slider(
               value: _workout.toDouble(),
@@ -763,7 +768,7 @@ class _ScenarioBInputSheetState extends State<_ScenarioBInputSheet> {
             SizedBox(
               width: double.infinity,
               child: PrimaryButton(
-                label: 'Run Scenario B',
+                label: l10n.runScenarioB,
                 icon: Icons.rocket_launch_rounded,
                 isLoading: _isRunning,
                 onPressed: () async {
@@ -774,7 +779,7 @@ class _ScenarioBInputSheetState extends State<_ScenarioBInputSheet> {
                     dailyStudyHours: _study,
                     workoutDaysPerWeek: _workout,
                     currency: 'USD',
-                    careerField: 'Technology',
+                    careerField: l10n.techField,
                     weeklySkillHours: 5.0,
                     certsPerYear: 1,
                     socialMediaHours: 2.0,

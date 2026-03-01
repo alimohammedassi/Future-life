@@ -10,6 +10,7 @@ import '../../../../core/navigation/app_router.dart';
 import '../../../../core/utils/app_formatters.dart';
 import '../../data/providers/simulation_providers.dart';
 import '../../domain/models/simulation_result.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../widgets/shared_widgets.dart';
 
 /// Screen 2 — "Future Dashboard"
@@ -66,6 +67,7 @@ class _ResultsDashboard extends StatelessWidget {
 
   double get _savings {
     return switch (selectedYear) {
+      0 => result.monthlySavings,
       1 => result.savings1Y,
       5 => result.savings5Y,
       _ => result.savings10Y,
@@ -74,6 +76,7 @@ class _ResultsDashboard extends StatelessWidget {
 
   double get _studyHours {
     return switch (selectedYear) {
+      0 => result.studyHours1Y / 12,
       1 => result.studyHours1Y,
       5 => result.studyHours5Y,
       _ => result.studyHours10Y,
@@ -82,6 +85,7 @@ class _ResultsDashboard extends StatelessWidget {
 
   double get _healthScore {
     return switch (selectedYear) {
+      0 => result.healthScore1Y,
       1 => result.healthScore1Y,
       5 => result.healthScore5Y,
       _ => result.healthScore10Y,
@@ -90,6 +94,7 @@ class _ResultsDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
@@ -112,7 +117,7 @@ class _ResultsDashboard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: AppConstants.spacingS),
-                Text('Future Dashboard', style: AppTextStyles.headlineSmall),
+                Text(l10n.resultsTitle, style: AppTextStyles.headlineSmall),
               ],
             ),
             actions: [
@@ -145,8 +150,8 @@ class _ResultsDashboard extends StatelessWidget {
                 MetricCard(
                   icon: Icons.account_balance_wallet_rounded,
                   iconColor: AppColors.primaryLight,
-                  label: 'Financial',
-                  sublabel: 'High liquidity strategy',
+                  label: l10n.financial,
+                  sublabel: l10n.highLiquidity,
                   value: AppFormatters.abbreviate(_savings,
                       currencyCode: result.currency),
                   progressValue: (_savings / result.savings10Y).clamp(0, 1),
@@ -160,10 +165,10 @@ class _ResultsDashboard extends StatelessWidget {
                 MetricCard(
                   icon: Icons.school_rounded,
                   iconColor: AppColors.accentCyan,
-                  label: 'Knowledge',
-                  sublabel: 'Advanced cognitive dev.',
-                  value:
-                      '${(_studyHours / 10000 * 98).clamp(0, 99).toInt()}% IQ Rank',
+                  label: l10n.knowledgeLabel,
+                  sublabel: l10n.advancedCognitive,
+                  value: l10n
+                      .iqRank((_studyHours / 10000 * 98).clamp(0, 99).toInt()),
                   progressValue: (_studyHours / (10 * 365 * 10)).clamp(0, 1),
                   progressColor: AppColors.accentCyan,
                   delayMs: 200,
@@ -175,9 +180,9 @@ class _ResultsDashboard extends StatelessWidget {
                 MetricCard(
                   icon: Icons.fitness_center_rounded,
                   iconColor: AppColors.accentGreen,
-                  label: 'Health',
-                  sublabel: 'Biomarkers in peak range',
-                  value: '${_healthScore.toInt()}% Vitality',
+                  label: l10n.healthLabel,
+                  sublabel: l10n.biomarkersPeak,
+                  value: l10n.vitalityScore(_healthScore.toInt()),
                   progressValue: _healthScore / 100,
                   progressColor: AppColors.accentGreen,
                   delayMs: 300,
@@ -189,9 +194,10 @@ class _ResultsDashboard extends StatelessWidget {
                 MetricCard(
                   icon: Icons.work_history_rounded,
                   iconColor: AppColors.primary,
-                  label: 'Career Growth',
-                  sublabel: 'Multiplier trajectory',
-                  value: '${(result.careerGrowthIndex * 100).toInt()}% Index',
+                  label: l10n.careerGrowthLabel,
+                  sublabel: l10n.multiplierTrajectory,
+                  value: l10n
+                      .growthIndex((result.careerGrowthIndex * 100).toInt()),
                   progressValue: (result.careerGrowthIndex / 5).clamp(0, 1),
                   progressColor: AppColors.primary,
                   delayMs: 350,
@@ -203,10 +209,10 @@ class _ResultsDashboard extends StatelessWidget {
                 MetricCard(
                   icon: Icons.people_alt_rounded,
                   iconColor: AppColors.accentAmber,
-                  label: 'Social Balance',
+                  label: l10n.socialBalanceLabel,
                   sublabel:
-                      'Isolation Risk: ${(result.isolationRisk * 100).toInt()}%',
-                  value: '${result.socialBalanceScore.toInt()}/100',
+                      l10n.isolationRisk((result.isolationRisk * 100).toInt()),
+                  value: l10n.socialScore(result.socialBalanceScore.toInt()),
                   progressValue: (result.socialBalanceScore / 100).clamp(0, 1),
                   progressColor: AppColors.accentAmber,
                   delayMs: 380,
@@ -227,7 +233,7 @@ class _ResultsDashboard extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: PrimaryButton(
-                    label: 'Compare Another Scenario',
+                    label: l10n.compareScenario,
                     icon: Icons.compare_arrows_rounded,
                     onPressed: onCompare,
                   ),
@@ -236,7 +242,7 @@ class _ResultsDashboard extends StatelessWidget {
                 const SizedBox(height: AppConstants.spacingS),
 
                 Text(
-                  'Predictions are based on current market trends and\nsimulation parameters.',
+                  l10n.predictionDisclaimer,
                   textAlign: TextAlign.center,
                   style: AppTextStyles.bodySmall,
                 ).animate(delay: 600.ms).fadeIn(),
@@ -266,6 +272,7 @@ class _HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GlassCard(
       gradient: const LinearGradient(
         begin: Alignment.topLeft,
@@ -277,7 +284,7 @@ class _HeroSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'SCENARIO: OPTIMIZED PATH',
+            l10n.optimizedPath,
             style: AppTextStyles.overline.copyWith(
               color: AppColors.primaryLight,
             ),
@@ -286,11 +293,11 @@ class _HeroSection extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.accentCyan.withOpacity(0.2),
+              color: AppColors.accentCyan.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              'Life Strategy Score: ${result.lifeStrategyScore.toInt()}/100',
+              l10n.strategyScore(result.lifeStrategyScore.toInt()),
               style: AppTextStyles.labelMedium
                   .copyWith(color: AppColors.accentCyan),
             ),
@@ -300,9 +307,11 @@ class _HeroSection extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                    text: 'Your Future in ', style: AppTextStyles.displaySmall),
+                    text: l10n.futureIn, style: AppTextStyles.displaySmall),
                 TextSpan(
-                  text: '$selectedYear Year${selectedYear > 1 ? 's' : ''}',
+                  text: selectedYear == 0
+                      ? l10n.oneMonth
+                      : l10n.yearsCount(selectedYear),
                   style: AppTextStyles.displaySmall
                       .copyWith(color: AppColors.primaryLight),
                 ),
@@ -327,7 +336,7 @@ class _HeroSection extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Estimated Total Net Worth',
+            l10n.netWorth,
             style: AppTextStyles.bodySmall,
           ),
         ],
@@ -351,6 +360,7 @@ class _ChartSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -359,10 +369,12 @@ class _ChartSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Projected Growth', style: AppTextStyles.headlineSmall),
+              Text(l10n.projectedGrowth, style: AppTextStyles.headlineSmall),
               Row(
-                children: [1, 5, 10].map((y) {
+                children: [0, 1, 5, 10].map((y) {
                   final isSelected = y == selectedYear;
+                  final label =
+                      y == 0 ? '1${l10n.monthShort}' : '$y${l10n.yearShort}';
                   return GestureDetector(
                     onTap: () => onYearChanged(y),
                     child: AnimatedContainer(
@@ -378,7 +390,7 @@ class _ChartSection extends StatelessWidget {
                             BorderRadius.circular(AppConstants.radiusFull),
                       ),
                       child: Text(
-                        '${y}Y',
+                        label,
                         style: AppTextStyles.labelSmall.copyWith(
                           color:
                               isSelected ? Colors.white : AppColors.textMuted,
@@ -398,10 +410,8 @@ class _ChartSection extends StatelessWidget {
           SizedBox(
             height: 200,
             child: _SavingsLineChart(
-              snapshots: result.yearlySnapshots
-                  .where((s) => s.year <= selectedYear)
-                  .toList(),
-              currency: result.currency,
+              result: result,
+              selectedYear: selectedYear,
             ),
           ),
         ],
@@ -413,29 +423,50 @@ class _ChartSection extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _SavingsLineChart extends StatelessWidget {
-  final List snapshots;
-  final String currency;
+  final SimulationResult result;
+  final int selectedYear;
 
-  const _SavingsLineChart({required this.snapshots, required this.currency});
+  const _SavingsLineChart({required this.result, required this.selectedYear});
 
   @override
   Widget build(BuildContext context) {
-    if (snapshots.isEmpty) return const SizedBox.shrink();
+    if (result.yearlySnapshots.isEmpty) return const SizedBox.shrink();
 
-    final maxY = (snapshots.map((s) => s.savings).reduce(
-                  (a, b) => a > b ? a : b,
-                ) *
-            1.1)
-        .toDouble();
+    final List<FlSpot> spots;
+    final double maxX;
+    double maxY;
 
-    final spots = snapshots
-        .map((s) => FlSpot(s.year.toDouble(), s.savings.toDouble()))
-        .toList();
+    if (selectedYear == 0) {
+      spots = [
+        const FlSpot(0, 0),
+        FlSpot(1, result.monthlySavings),
+      ];
+      maxX = 1;
+      maxY = result.monthlySavings > 0 ? result.monthlySavings * 1.5 : 100;
+    } else {
+      spots = [
+        const FlSpot(0, 0),
+        ...result.yearlySnapshots
+            .where((s) => s.year <= selectedYear)
+            .map((s) => FlSpot(s.year.toDouble(), s.savings.toDouble()))
+      ];
+      maxX = selectedYear.toDouble();
+      final filteredSnaps =
+          result.yearlySnapshots.where((s) => s.year <= selectedYear);
+      maxY = filteredSnaps.isEmpty
+          ? 100
+          : filteredSnaps
+                  .map((s) => s.savings)
+                  .reduce((a, b) => a > b ? a : b) *
+              1.1;
+    }
+
+    if (maxY == 0) maxY = 100;
 
     return LineChart(
       LineChartData(
-        minX: 1,
-        maxX: snapshots.last.year.toDouble(),
+        minX: 0,
+        maxX: maxX,
         minY: 0,
         maxY: maxY,
         gridData: FlGridData(
@@ -449,16 +480,24 @@ class _SavingsLineChart extends StatelessWidget {
         ),
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(
-          leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          leftTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
               interval: 1,
               getTitlesWidget: (value, meta) {
+                final l10n = AppLocalizations.of(context)!;
+                if (selectedYear == 0) {
+                  return Text('${l10n.monthShort} ${value.toInt()}',
+                      style: AppTextStyles.labelSmall);
+                }
                 return Text(
-                  'Year ${value.toInt()}',
+                  '${l10n.yearShort} ${value.toInt()}',
                   style: AppTextStyles.labelSmall,
                 );
               },
@@ -488,8 +527,8 @@ class _SavingsLineChart extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  AppColors.primary.withOpacity(0.4),
-                  AppColors.primary.withOpacity(0.0),
+                  AppColors.primary.withValues(alpha: 0.4),
+                  AppColors.primary.withValues(alpha: 0.0),
                 ],
               ),
             ),
@@ -500,7 +539,8 @@ class _SavingsLineChart extends StatelessWidget {
             getTooltipColor: (_) => AppColors.surface,
             getTooltipItems: (spots) => spots
                 .map((s) => LineTooltipItem(
-                      AppFormatters.abbreviate(s.y, currencyCode: currency),
+                      AppFormatters.abbreviate(s.y,
+                          currencyCode: result.currency),
                       AppTextStyles.labelLarge,
                     ))
                 .toList(),
@@ -520,6 +560,7 @@ class _LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Center(
@@ -528,7 +569,7 @@ class _LoadingView extends StatelessWidget {
           children: [
             const CircularProgressIndicator(color: AppColors.primary),
             const SizedBox(height: AppConstants.spacingL),
-            Text('Simulating your future...', style: AppTextStyles.bodyLarge),
+            Text(l10n.simulatingFuture, style: AppTextStyles.bodyLarge),
           ],
         ),
       ),
@@ -545,6 +586,7 @@ class _EmptyResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Center(
@@ -557,7 +599,7 @@ class _EmptyResultsView extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -568,19 +610,19 @@ class _EmptyResultsView extends StatelessWidget {
               ),
               const SizedBox(height: AppConstants.spacingL),
               Text(
-                'No Simulation Yet',
+                l10n.noSimulationYet,
                 style: AppTextStyles.headlineLarge,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppConstants.spacingM),
               Text(
-                'Run your first simulation to see your projected future here.',
+                l10n.noSimulationSub,
                 style: AppTextStyles.bodyLarge,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppConstants.spacingXL),
               PrimaryButton(
-                label: 'Start Simulation',
+                label: l10n.startSimulation,
                 icon: Icons.bolt_rounded,
                 onPressed: onStartSimulation,
               ),

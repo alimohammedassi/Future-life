@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/navigation/app_router.dart';
 
@@ -22,6 +23,7 @@ class ShellScreen extends StatelessWidget {
 class _BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final location = GoRouterState.of(context).uri.toString();
 
     // Map routes to tab indices
@@ -49,19 +51,19 @@ class _BottomNav extends StatelessWidget {
             children: [
               _NavItem(
                 icon: Icons.auto_graph_rounded,
-                label: 'Simulation',
+                label: l10n.navSimulation,
                 isSelected: currentIndex == 0,
                 onTap: () => context.go(AppRoutes.input),
               ),
               _NavItem(
                 icon: Icons.leaderboard_rounded,
-                label: 'Insights',
+                label: l10n.navInsights,
                 isSelected: currentIndex == 1,
                 onTap: () => context.go(AppRoutes.results),
               ),
               _NavItem(
                 icon: Icons.compare_arrows_rounded,
-                label: 'Compare',
+                label: l10n.navCompare,
                 isSelected: currentIndex == 2,
                 onTap: () => context.go(AppRoutes.comparison),
               ),
@@ -102,7 +104,7 @@ class _NavItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primary.withOpacity(0.12)
+              ? AppColors.primary.withValues(alpha: 0.12)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),

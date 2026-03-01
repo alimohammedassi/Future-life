@@ -10,6 +10,7 @@ import '../../../../core/navigation/app_router.dart';
 import '../../../../core/utils/app_formatters.dart';
 import '../../data/providers/simulation_providers.dart';
 import '../../domain/models/simulation_input.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../widgets/shared_widgets.dart';
 
 /// Screen 1 — "Setup Your Life Parameters"
@@ -66,6 +67,7 @@ class _InputScreenState extends ConsumerState<InputScreen>
     final input = ref.watch(simulationInputProvider);
     final preview10Y = ref.watch(livePreviewProvider);
 
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Form(
@@ -86,7 +88,7 @@ class _InputScreenState extends ConsumerState<InputScreen>
                   color: AppColors.background,
                   border: Border(
                     bottom: BorderSide(
-                      color: AppColors.border.withOpacity(0.5),
+                      color: AppColors.border.withValues(alpha: 0.5),
                       width: 0.5,
                     ),
                   ),
@@ -112,7 +114,7 @@ class _InputScreenState extends ConsumerState<InputScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'LIFE PARAMETERS',
+                          l10n.inputTitle,
                           style: AppTextStyles.overline.copyWith(
                             color: AppColors.primaryLight,
                             letterSpacing: 3,
@@ -120,7 +122,7 @@ class _InputScreenState extends ConsumerState<InputScreen>
                           ),
                         ),
                         Text(
-                          'Setup Your Future',
+                          l10n.inputSubtitle,
                           style: AppTextStyles.headlineSmall,
                         ),
                       ],
@@ -173,7 +175,7 @@ class _InputScreenState extends ConsumerState<InputScreen>
                   // Section header: Finances
                   _SectionHeader(
                     icon: Icons.account_balance_wallet_outlined,
-                    label: 'FINANCES',
+                    label: l10n.finances,
                     color: AppColors.primaryLight,
                   ).animate(delay: 120.ms).fadeIn(),
 
@@ -209,7 +211,7 @@ class _InputScreenState extends ConsumerState<InputScreen>
                   // Section header: Health & Growth
                   _SectionHeader(
                     icon: Icons.bolt_rounded,
-                    label: 'HEALTH & GROWTH',
+                    label: l10n.healthGrowth,
                     color: AppColors.accentCyan,
                   ).animate(delay: 220.ms).fadeIn(),
 
@@ -244,7 +246,7 @@ class _InputScreenState extends ConsumerState<InputScreen>
                   // Section header: Career
                   _SectionHeader(
                     icon: Icons.work_outline_rounded,
-                    label: 'CAREER',
+                    label: l10n.career,
                     color: AppColors.accentCyan,
                   ).animate(delay: 320.ms).fadeIn(),
 
@@ -271,7 +273,7 @@ class _InputScreenState extends ConsumerState<InputScreen>
                   // Section header: Social
                   _SectionHeader(
                     icon: Icons.people_outline_rounded,
-                    label: 'SOCIAL',
+                    label: l10n.social,
                     color: AppColors.accentAmber,
                   ).animate(delay: 390.ms).fadeIn(),
 
@@ -393,6 +395,7 @@ class _HeroHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       height: 110,
       decoration: BoxDecoration(
@@ -426,8 +429,8 @@ class _HeroHeader extends StatelessWidget {
                         shape: BoxShape.circle,
                         gradient: RadialGradient(
                           colors: [
-                            AppColors.primary.withOpacity(
-                                0.25 + pulseController.value * 0.05),
+                            AppColors.primary.withValues(
+                                alpha: 0.25 + pulseController.value * 0.05),
                             Colors.transparent,
                           ],
                         ),
@@ -444,8 +447,8 @@ class _HeroHeader extends StatelessWidget {
                         shape: BoxShape.circle,
                         gradient: RadialGradient(
                           colors: [
-                            AppColors.accentCyan.withOpacity(
-                                0.15 + pulseController.value * 0.05),
+                            AppColors.accentCyan.withValues(
+                                alpha: 0.15 + pulseController.value * 0.05),
                             Colors.transparent,
                           ],
                         ),
@@ -469,7 +472,7 @@ class _HeroHeader extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'TRAJECTORY',
+                        l10n.trajectory,
                         style: AppTextStyles.overline.copyWith(
                           color: AppColors.primaryLight,
                           letterSpacing: 4,
@@ -478,7 +481,7 @@ class _HeroHeader extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Define Your Path',
+                        l10n.definePath,
                         style: AppTextStyles.headlineLarge,
                       ),
                       const SizedBox(height: 6),
@@ -488,7 +491,8 @@ class _HeroHeader extends StatelessWidget {
                               label: '10Y', color: AppColors.primaryLight),
                           const SizedBox(width: 6),
                           _MiniPill(
-                              label: '4 MODULES', color: AppColors.accentCyan),
+                              label: '5 ${l10n.lifeModules.toUpperCase()}',
+                              color: AppColors.accentCyan),
                         ],
                       ),
                     ],
@@ -499,9 +503,9 @@ class _HeroHeader extends StatelessWidget {
                     height: 56,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: AppColors.primary.withOpacity(0.15),
+                      color: AppColors.primary.withValues(alpha: 0.15),
                       border: Border.all(
-                        color: AppColors.primaryLight.withOpacity(0.3),
+                        color: AppColors.primaryLight.withValues(alpha: 0.3),
                         width: 1,
                       ),
                     ),
@@ -583,6 +587,7 @@ class _LivePreviewBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppConstants.radiusXL),
@@ -594,7 +599,7 @@ class _LivePreviewBanner extends StatelessWidget {
         border: Border.all(color: AppColors.borderGlow, width: 0.5),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.15),
+            color: AppColors.primary.withValues(alpha: 0.15),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -619,8 +624,8 @@ class _LivePreviewBanner extends StatelessWidget {
                           color: AppColors.accentGreen,
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.accentGreen.withOpacity(
-                                  0.4 + pulseController.value * 0.4),
+                              color: AppColors.accentGreen.withValues(
+                                  alpha: 0.4 + pulseController.value * 0.4),
                               blurRadius: 6,
                             ),
                           ],
@@ -629,7 +634,7 @@ class _LivePreviewBanner extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      'LIVE • 10-YEAR PROJECTION',
+                      l10n.liveProjection,
                       style: AppTextStyles.overline.copyWith(
                         color: AppColors.textMuted,
                         letterSpacing: 2,
@@ -734,13 +739,14 @@ class _IncomeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Text('Monthly Income', style: AppTextStyles.headlineSmall),
+              Text(l10n.monthlyIncome, style: AppTextStyles.headlineSmall),
               const Spacer(),
               Container(
                 padding:
@@ -790,7 +796,7 @@ class _IncomeCard extends StatelessWidget {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppConstants.radiusL),
                 borderSide: BorderSide(
-                    color: AppColors.border.withOpacity(0.6), width: 0.5),
+                    color: AppColors.border.withValues(alpha: 0.6), width: 0.5),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppConstants.radiusL),
@@ -822,16 +828,16 @@ class _IncomeCard extends StatelessWidget {
                   const BoxConstraints(minWidth: 0, minHeight: 0),
               hintText: '0',
               hintStyle: AppTextStyles.headlineLarge.copyWith(
-                color: AppColors.textMuted.withOpacity(0.4),
+                color: AppColors.textMuted.withValues(alpha: 0.4),
               ),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter your monthly income';
+                return l10n.incomeErrorEmpty;
               }
               final parsed = double.tryParse(value);
               if (parsed == null || parsed <= 0) {
-                return 'Please enter a valid income amount';
+                return l10n.incomeErrorInvalid;
               }
               return null;
             },
@@ -839,7 +845,7 @@ class _IncomeCard extends StatelessWidget {
           ),
           const SizedBox(height: AppConstants.spacingS),
           Text(
-            'Post-tax monthly earnings',
+            l10n.incomeHint,
             style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.textMuted,
             ),
@@ -873,38 +879,39 @@ class _SavingPercentageCard extends StatelessWidget {
     required this.onChanged,
   });
 
-  String get _ratingLabel {
-    if (value < 0.1) return 'Low';
-    if (value < 0.25) return 'Moderate';
-    if (value < 0.4) return 'Good';
-    return 'Excellent';
+  String _ratingLabel(AppLocalizations l10n) {
+    if (value < 0.1) return l10n.savingLow;
+    if (value < 0.15) return l10n.savingModerate;
+    if (value < 0.25) return l10n.savingGood;
+    return l10n.savingExcellent;
   }
 
   Color get _ratingColor {
     if (value < 0.1) return AppColors.accentRed;
-    if (value < 0.25) return AppColors.accentAmber;
-    if (value < 0.4) return AppColors.primaryLight;
+    if (value < 0.15) return AppColors.accentAmber;
+    if (value < 0.25) return AppColors.primaryLight;
     return AppColors.accentGreen;
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Text('Saving Rate', style: AppTextStyles.headlineSmall),
+              Text(l10n.savingRate, style: AppTextStyles.headlineSmall),
               const Spacer(),
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                 decoration: BoxDecoration(
-                  color: _ratingColor.withOpacity(0.12),
+                  color: _ratingColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(AppConstants.radiusFull),
                   border: Border.all(
-                      color: _ratingColor.withOpacity(0.3), width: 0.5),
+                      color: _ratingColor.withValues(alpha: 0.3), width: 0.5),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -917,9 +924,9 @@ class _SavingPercentageCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      '· $_ratingLabel',
+                      '· ${_ratingLabel(l10n)}',
                       style: AppTextStyles.labelSmall.copyWith(
-                        color: _ratingColor.withOpacity(0.7),
+                        color: _ratingColor.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -933,7 +940,7 @@ class _SavingPercentageCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: value / AppConstants.maxSavingPercentage,
-              backgroundColor: AppColors.border.withOpacity(0.5),
+              backgroundColor: AppColors.border.withValues(alpha: 0.5),
               valueColor: AlwaysStoppedAnimation(_ratingColor),
               minHeight: 4,
             ),
@@ -980,6 +987,7 @@ class _StudyHoursCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GlassCard(
       padding: const EdgeInsets.all(AppConstants.spacingM),
       child: Column(
@@ -990,14 +998,14 @@ class _StudyHoursCard extends StatelessWidget {
               const Icon(Icons.menu_book_rounded,
                   color: AppColors.accentCyan, size: 16),
               const SizedBox(width: 6),
-              Text('Study', style: AppTextStyles.labelMedium),
+              Text(l10n.study, style: AppTextStyles.labelMedium),
             ],
           ),
           const SizedBox(height: AppConstants.spacingM),
           Center(
             child: _CircularStepper(
               value: value,
-              unit: 'h/day',
+              unit: l10n.dayUnit,
               accentColor: AppColors.accentCyan,
               onDecrease: value > 0
                   ? () => onChanged((value - 0.5).clamp(0, 10))
@@ -1022,6 +1030,7 @@ class _WorkoutDaysCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GlassCard(
       padding: const EdgeInsets.all(AppConstants.spacingM),
       child: Column(
@@ -1032,7 +1041,7 @@ class _WorkoutDaysCard extends StatelessWidget {
               const Icon(Icons.fitness_center_rounded,
                   color: AppColors.accentGreen, size: 16),
               const SizedBox(width: 6),
-              Text('Workout', style: AppTextStyles.labelMedium),
+              Text(l10n.workout, style: AppTextStyles.labelMedium),
             ],
           ),
           const SizedBox(height: AppConstants.spacingM),
@@ -1043,6 +1052,7 @@ class _WorkoutDaysCard extends StatelessWidget {
             children: List.generate(7, (i) {
               final day = i + 1;
               final isSelected = day <= value;
+              final dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
               return GestureDetector(
                 onTap: () => onChanged(day == value ? 0 : day),
                 child: AnimatedContainer(
@@ -1051,19 +1061,19 @@ class _WorkoutDaysCard extends StatelessWidget {
                   height: 30,
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppColors.accentGreen.withOpacity(0.2)
+                        ? AppColors.accentGreen.withValues(alpha: 0.2)
                         : AppColors.surfaceElevated,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: isSelected
                           ? AppColors.accentGreen
-                          : AppColors.border.withOpacity(0.5),
+                          : AppColors.border.withValues(alpha: 0.5),
                       width: isSelected ? 1 : 0.5,
                     ),
                   ),
                   child: Center(
                     child: Text(
-                      ['M', 'T', 'W', 'T', 'F', 'S', 'S'][i],
+                      dayLabels[i],
                       style: AppTextStyles.labelSmall.copyWith(
                         color: isSelected
                             ? AppColors.accentGreen
@@ -1079,9 +1089,9 @@ class _WorkoutDaysCard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            '$value day${value != 1 ? 's' : ''} / week',
+            l10n.workoutDaysPerWeek(value),
             style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.accentGreen.withOpacity(0.8),
+              color: AppColors.accentGreen.withValues(alpha: 0.8),
             ),
           ),
         ],
@@ -1155,11 +1165,11 @@ class _StepButton extends StatelessWidget {
         height: 36,
         decoration: BoxDecoration(
           color: isEnabled
-              ? color.withOpacity(0.12)
-              : AppColors.border.withOpacity(0.15),
+              ? color.withValues(alpha: 0.12)
+              : AppColors.border.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: isEnabled ? color.withOpacity(0.4) : AppColors.border,
+            color: isEnabled ? color.withValues(alpha: 0.4) : AppColors.border,
             width: 0.5,
           ),
         ),
@@ -1192,28 +1202,31 @@ class _CareerCard extends StatelessWidget {
     required this.onCertsChanged,
   });
 
-  static const _fields = [
-    'Technology',
-    'Healthcare',
-    'Finance',
-    'Arts',
-    'Education',
-    'Other'
-  ];
+  List<String> _getFields(AppLocalizations l10n) => [
+        l10n.techField,
+        l10n.healthField,
+        l10n.financeField,
+        l10n.artsField,
+        l10n.eduField,
+        l10n.otherField
+      ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final fields = _getFields(l10n);
+
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Career & Skills', style: AppTextStyles.headlineSmall),
+          Text(l10n.careerSkills, style: AppTextStyles.headlineSmall),
           const SizedBox(height: AppConstants.spacingM),
           // Field chips
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: _fields.map((field) {
+            children: fields.map((field) {
               final isSelected = field == careerField;
               return GestureDetector(
                 onTap: () => onFieldChanged(field),
@@ -1223,14 +1236,14 @@ class _CareerCard extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppColors.primary.withOpacity(0.2)
+                        ? AppColors.primary.withValues(alpha: 0.2)
                         : AppColors.surfaceElevated,
                     borderRadius:
                         BorderRadius.circular(AppConstants.radiusFull),
                     border: Border.all(
                       color: isSelected
-                          ? AppColors.primaryLight.withOpacity(0.6)
-                          : AppColors.border.withOpacity(0.5),
+                          ? AppColors.primaryLight.withValues(alpha: 0.6)
+                          : AppColors.border.withValues(alpha: 0.5),
                       width: 0.5,
                     ),
                   ),
@@ -1249,7 +1262,7 @@ class _CareerCard extends StatelessWidget {
           const SizedBox(height: AppConstants.spacingM),
           // Sliders
           _LabeledSlider(
-            label: 'Weekly Skill Dev.',
+            label: l10n.weeklySkillDev,
             value: weeklySkillHours,
             displayText: AppFormatters.hours(weeklySkillHours),
             min: 0,
@@ -1260,7 +1273,7 @@ class _CareerCard extends StatelessWidget {
           ),
           const SizedBox(height: AppConstants.spacingS),
           _LabeledSlider(
-            label: 'Certs per Year',
+            label: l10n.certsPerYearLabel,
             value: certsPerYear.toDouble(),
             displayText: '$certsPerYear',
             min: 0,
@@ -1296,14 +1309,15 @@ class _SocialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Social & Networking', style: AppTextStyles.headlineSmall),
+          Text(l10n.socialNetworking, style: AppTextStyles.headlineSmall),
           const SizedBox(height: AppConstants.spacingM),
           _LabeledSlider(
-            label: 'Social Media',
+            label: l10n.socialMedia,
             value: socialMediaHours,
             displayText: AppFormatters.hours(socialMediaHours),
             min: 0,
@@ -1311,11 +1325,11 @@ class _SocialCard extends StatelessWidget {
             divisions: 20,
             onChanged: onSocialMediaChanged,
             accentColor: AppColors.accentRed,
-            suffix: '/day',
+            suffix: l10n.dayUnit,
           ),
           const SizedBox(height: AppConstants.spacingS),
           _LabeledSlider(
-            label: 'Family & Friends',
+            label: l10n.familyFriends,
             value: familyHours,
             displayText: AppFormatters.hours(familyHours),
             min: 0,
@@ -1323,11 +1337,11 @@ class _SocialCard extends StatelessWidget {
             divisions: 40,
             onChanged: onFamilyChanged,
             accentColor: AppColors.accentAmber,
-            suffix: '/wk',
+            suffix: l10n.weekUnit,
           ),
           const SizedBox(height: AppConstants.spacingS),
           _LabeledSlider(
-            label: 'Networking',
+            label: l10n.networking,
             value: networkingHours,
             displayText: AppFormatters.hours(networkingHours),
             min: 0,
@@ -1335,7 +1349,7 @@ class _SocialCard extends StatelessWidget {
             divisions: 20,
             onChanged: onNetworkingChanged,
             accentColor: AppColors.primaryLight,
-            suffix: '/wk',
+            suffix: l10n.weekUnit,
           ),
         ],
       ),
@@ -1401,9 +1415,9 @@ class _LabeledSlider extends StatelessWidget {
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
             activeTrackColor: accentColor,
-            inactiveTrackColor: AppColors.border.withOpacity(0.5),
+            inactiveTrackColor: AppColors.border.withValues(alpha: 0.5),
             thumbColor: accentColor,
-            overlayColor: accentColor.withOpacity(0.1),
+            overlayColor: accentColor.withValues(alpha: 0.1),
             trackHeight: 2,
             thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
           ),
@@ -1433,14 +1447,15 @@ class _BottomActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppColors.background.withOpacity(0),
-            AppColors.background.withOpacity(0.95),
+            AppColors.background.withValues(alpha: 0),
+            AppColors.background.withValues(alpha: 0.95),
             AppColors.background,
           ],
         ),
@@ -1455,7 +1470,7 @@ class _BottomActionBar extends StatelessWidget {
         children: [
           Expanded(
             child: PrimaryButton(
-              label: 'Simulate My Future',
+              label: l10n.simulateMyFuture,
               icon: Icons.auto_awesome_rounded,
               isLoading: isSubmitting,
               onPressed: onPressed,

@@ -1,0 +1,227 @@
+{
+  "@@locale": "ar",
+  "appTitle": "لايف كاست",
+  "heroTitlePrefix": "حاكي\n",
+  "heroTitleSuffix": "مستقبلك",
+  "heroSubtitle": "شاهد إلى أين ستقودك عاداتك اليومية.\nخياراتك، متوقعة لعشر سنوات قادمة.",
+  "engineLabel": "محرك حياة مدعوم بالذكاء الاصطناعي",
+
+  "simFeatureMoney": "نمو المال",
+  "simFeatureMoneySub": "ثروتك المتوقعة",
+  "simFeatureCognitive": "قمة الإدراك",
+  "simFeatureCognitiveSub": "إتقان المهارات",
+  "simFeatureVitality": "مؤشر الحيوية",
+  "simFeatureVitalitySub": "الصحة وطول العمر",
+  "simFeatureCareer": "المسار المهني",
+  "simFeatureCareerSub": "نمو الراتب",
+  "simFeatureSocial": "الرصيد الاجتماعي",
+  "simFeatureSocialSub": "قوة علاقاتك",
+  "startSimulation": "أبدأ المحاكاة",
+
+  "projection": "توقعات",
+  "lifeModules": "جوانب حياة",
+  "scenarios": "سيناريوهات",
+
+  "language": "اللغة",
+
+  "inputTitle": "إعدادات الحياة",
+  "inputSubtitle": "خطط لمستقبلك",
+  "trajectory": "مسار وتوجه",
+  "definePath": "حدد طريقك",
+  "liveProjection": "مباشرة • توقعات 10 سنوات",
+  "finances": "المالية",
+  "monthlyIncome": "الدخل الشهري",
+  "incomeHint": "الدخل الشهري بعد الضرائب",
+  "incomeErrorEmpty": "يرجى إدخال دخلك الشهري",
+  "incomeErrorInvalid": "يرجى إدخال مبلغ صحيح",
+  "savingRate": "معدل الادخار",
+  "savingLow": "منخفض",
+  "savingModerate": "متوسط",
+  "savingGood": "جيد",
+  "savingExcellent": "ممتاز",
+  "healthGrowth": "الصحة والنمو",
+  "study": "الدراسة",
+  "workout": "الرياضة",
+  "workoutDaysPerWeek": "{count} {count, plural, =1{يوم} =2{يومين} other{أيام}} / أسبوع",
+  "@workoutDaysPerWeek": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "career": "المهنة",
+  "careerSkills": "المهنة والمهارات",
+  "weeklySkillDev": "تطوير مهارات أسبوعي",
+  "certsPerYearLabel": "شهادات سنوياً",
+  "social": "اجتماعي",
+  "socialNetworking": "الجانب الاجتماعي",
+  "socialMedia": "تواصل اجتماعي",
+  "familyFriends": "العائلة والأصدقاء",
+  "networking": "العلاقات المهنية",
+  "dayUnit": "/يوم",
+  "weekUnit": "/أس",
+  "simulateMyFuture": "أظهر لي مستقبلي",
+  "techField": "تكنولوجيا",
+  "healthField": "رعاية صحية",
+  "financeField": "مالية",
+  "artsField": "فنون",
+  "eduField": "تعليم",
+  "otherField": "أخرى",
+
+  "resultsTitle": "لوحة النتائج",
+  "financial": "المالي",
+  "highLiquidity": "استراتيجية سيولة عالية",
+  "knowledgeLabel": "المعرفة",
+  "advancedCognitive": "تطوير إدراكي متقدم",
+  "iqRank": "{percent}% رتبة ذكاء",
+  "@iqRank": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "healthLabel": "الصحة",
+  "biomarkersPeak": "مؤشرات حيوية ممتازة",
+  "vitalityScore": "{percent}% حيوية",
+  "@vitalityScore": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "careerGrowthLabel": "النمو المهني",
+  "multiplierTrajectory": "مسار نمو مضاعف",
+  "growthIndex": "{percent}% مؤشر",
+  "@growthIndex": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "socialBalanceLabel": "التوازن الاجتماعي",
+  "isolationRisk": "خطر الانعزال: {percent}%",
+  "@isolationRisk": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "socialScore": "{score}/100",
+  "@socialScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "compareScenario": "قارن مع سيناريو آخر",
+  "predictionDisclaimer": "التوقعات مبنية على اتجاهات السوق الحالية ومعايير المحاكاة.",
+  "optimizedPath": "السيناريو: المسار الأمثل",
+  "strategyScore": "درجة استراتيجية الحياة: {score}/100",
+  "@strategyScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "futureIn": "مستقبلك في غضون ",
+  "oneMonth": "شهر واحد",
+  "yearsCount": "{count} {count, plural, =1{سنة} =2{سنتين} other{سنوات}}",
+  "@yearsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "netWorth": "صافي القيمة التقديرية",
+  "projectedGrowth": "النمو المتوقع",
+  "monthShort": "ش",
+  "yearShort": "س",
+  "simulatingFuture": "محاكاة مستقبلك قيد التنفيذ...",
+  "noSimulationYet": "لا توجد محاكاة بعد",
+  "noSimulationSub": "قم بإجراء محاكاتك الأولى لترى توقعات مستقبلك هنا.",
+
+  "comparisonTitle": "مقارنة السيناريوهات",
+  "scenarioLabel": "سيناريو {id}",
+  "@scenarioLabel": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "detailedImpact": "التأثير التفصيلي",
+  "monthlySavingsLabel": "الادخار الشهري",
+  "healthIndexLabel": "مؤشر الصحة",
+  "knowledgeGrowthLabel": "نمو المعرفة",
+  "linear": "خطي",
+  "exponential": "أسي",
+  "switchToOptimized": "التحول للمسار الأمثل",
+  "netWorthAt10": "صافي القيمة بعد 10 سنوات",
+  "tenYearProjections": "توقعات 10 سنوات",
+  "currentLabel": "الحالي",
+  "optimizedLabel": "المحسن",
+  "yearCountLabel": "سنة {count}",
+  "@yearCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "runSimFirst": "قم بإجراء محاكاة أولاً للمقارنة بين السيناريوهات.",
+  "goToSimulation": "انتقل للمحاكاة",
+  "addScenarioB": "أضف سيناريو ب",
+  "setupScenarioBSub": "قم بإعداد سيناريو ثانٍ بعادات مختلفة لمقارنة النتائج.",
+  "setupScenarioBTitle": "إعداد السيناريو ب",
+  "enterOptimizedHabits": "أدخل عاداتك اليومية المحسنة.",
+  "incomeValueLabel": "الدخل الشهري: {currency}{value}",
+  "@incomeValueLabel": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      },
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "savingValueLabel": "الادخار: {percent}%",
+  "@savingValueLabel": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "studyValueLabel": "الدراسة: {hours} ساعة/يوم",
+  "@studyValueLabel": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutValueLabel": "الرياضة: {days} أيام/أسبوع",
+  "@workoutValueLabel": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "runScenarioB": "تشغيل السيناريو ب",
+
+  "navSimulation": "المحاكاة",
+  "navInsights": "الرؤى",
+  "navCompare": "المقارنة",
+
+  "simulatingBtn": "جاري المحاكاة..."
+}

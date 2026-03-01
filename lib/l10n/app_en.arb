@@ -1,0 +1,227 @@
+{
+  "@@locale": "en",
+  "appTitle": "Lifecast",
+  "heroTitlePrefix": "Simulate Your\n",
+  "heroTitleSuffix": "Future Life",
+  "heroSubtitle": "See exactly where your habits lead.\nYour choices, visualized 10 years forward.",
+  "engineLabel": "AI-POWERED LIFE ENGINE",
+
+  "simFeatureMoney": "Money Growth",
+  "simFeatureMoneySub": "Projected wealth",
+  "simFeatureCognitive": "Cognitive Peak",
+  "simFeatureCognitiveSub": "Skill mastery",
+  "simFeatureVitality": "Vitality Index",
+  "simFeatureVitalitySub": "Health longevity",
+  "simFeatureCareer": "Career Trajectory",
+  "simFeatureCareerSub": "Salary growth",
+  "simFeatureSocial": "Social Capital",
+  "simFeatureSocialSub": "Your network strength",
+  "startSimulation": "Start Simulation",
+
+  "projection": "Projection",
+  "lifeModules": "Life Modules",
+  "scenarios": "Scenarios",
+
+  "language": "Language",
+
+  "inputTitle": "LIFE PARAMETERS",
+  "inputSubtitle": "Setup Your Future",
+  "trajectory": "TRAJECTORY",
+  "definePath": "Define Your Path",
+  "liveProjection": "LIVE • 10-YEAR PROJECTION",
+  "finances": "FINANCES",
+  "monthlyIncome": "Monthly Income",
+  "incomeHint": "Post-tax monthly earnings",
+  "incomeErrorEmpty": "Please enter your monthly income",
+  "incomeErrorInvalid": "Please enter a valid income amount",
+  "savingRate": "Saving Rate",
+  "savingLow": "Low",
+  "savingModerate": "Moderate",
+  "savingGood": "Good",
+  "savingExcellent": "Excellent",
+  "healthGrowth": "HEALTH & GROWTH",
+  "study": "Study",
+  "workout": "Workout",
+  "workoutDaysPerWeek": "{count} {count, plural, =1{day} other{days}} / week",
+  "@workoutDaysPerWeek": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "career": "CAREER",
+  "careerSkills": "Career & Skills",
+  "weeklySkillDev": "Weekly Skill Dev.",
+  "certsPerYearLabel": "Certs per Year",
+  "social": "SOCIAL",
+  "socialNetworking": "Social & Networking",
+  "socialMedia": "Social Media",
+  "familyFriends": "Family & Friends",
+  "networking": "Networking",
+  "dayUnit": "/day",
+  "weekUnit": "/wk",
+  "simulateMyFuture": "Simulate My Future",
+  "techField": "Technology",
+  "healthField": "Healthcare",
+  "financeField": "Finance",
+  "artsField": "Arts",
+  "eduField": "Education",
+  "otherField": "Other",
+
+  "resultsTitle": "Future Dashboard",
+  "financial": "Financial",
+  "highLiquidity": "High liquidity strategy",
+  "knowledgeLabel": "Knowledge",
+  "advancedCognitive": "Advanced cognitive dev.",
+  "iqRank": "{percent}% IQ Rank",
+  "@iqRank": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "healthLabel": "Health",
+  "biomarkersPeak": "Biomarkers in peak range",
+  "vitalityScore": "{percent}% Vitality",
+  "@vitalityScore": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "careerGrowthLabel": "Career Growth",
+  "multiplierTrajectory": "Multiplier trajectory",
+  "growthIndex": "{percent}% Index",
+  "@growthIndex": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "socialBalanceLabel": "Social Balance",
+  "isolationRisk": "Isolation Risk: {percent}%",
+  "@isolationRisk": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "socialScore": "{score}/100",
+  "@socialScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "compareScenario": "Compare Another Scenario",
+  "predictionDisclaimer": "Predictions are based on current market trends and\nsimulation parameters.",
+  "optimizedPath": "SCENARIO: OPTIMIZED PATH",
+  "strategyScore": "Life Strategy Score: {score}/100",
+  "@strategyScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "futureIn": "Your Future in ",
+  "oneMonth": "1 Month",
+  "yearsCount": "{count} {count, plural, =1{Year} other{Years}}",
+  "@yearsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "netWorth": "Estimated Total Net Worth",
+  "projectedGrowth": "Projected Growth",
+  "monthShort": "M",
+  "yearShort": "Y",
+  "simulatingFuture": "Simulating your future...",
+  "noSimulationYet": "No Simulation Yet",
+  "noSimulationSub": "Run your first simulation to see your projected future here.",
+
+  "comparisonTitle": "Scenario Comparison",
+  "scenarioLabel": "SCENARIO {id}",
+  "@scenarioLabel": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "detailedImpact": "Detailed Impact",
+  "monthlySavingsLabel": "Monthly Savings",
+  "healthIndexLabel": "Health Index",
+  "knowledgeGrowthLabel": "Knowledge Growth",
+  "linear": "Linear",
+  "exponential": "Exponential",
+  "switchToOptimized": "Switch to Optimized Path",
+  "netWorthAt10": "Net Worth @ 10yrs",
+  "tenYearProjections": "10-Year Projections",
+  "currentLabel": "Current",
+  "optimizedLabel": "Optimized",
+  "yearCountLabel": "Year {count}",
+  "@yearCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "runSimFirst": "Run a simulation first to compare scenarios.",
+  "goToSimulation": "Go to Simulation",
+  "addScenarioB": "Add Scenario B",
+  "setupScenarioBSub": "Set up a second scenario with different\nhabits to compare outcomes.",
+  "setupScenarioBTitle": "Setup Scenario B",
+  "enterOptimizedHabits": "Enter your optimized daily habits.",
+  "incomeValueLabel": "Monthly Income: {currency}{value}",
+  "@incomeValueLabel": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      },
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  "savingValueLabel": "Saving: {percent}%",
+  "@savingValueLabel": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "studyValueLabel": "Study: {hours} hrs/day",
+  "@studyValueLabel": {
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "workoutValueLabel": "Workout: {days} days/week",
+  "@workoutValueLabel": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "runScenarioB": "Run Scenario B",
+
+  "navSimulation": "Simulation",
+  "navInsights": "Insights",
+  "navCompare": "Compare",
+
+  "simulatingBtn": "Simulating…"
+}

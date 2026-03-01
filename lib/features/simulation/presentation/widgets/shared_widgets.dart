@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/constants/app_constants.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // GlassCard — redesigned with frosted blur, refined borders, and layered depth
@@ -81,12 +82,12 @@ class _GlassCardState extends State<GlassCard>
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.35),
+              color: Colors.black.withValues(alpha: 0.35),
               blurRadius: 24,
               offset: const Offset(0, 6),
             ),
             BoxShadow(
-              color: AppColors.primary.withOpacity(0.04),
+              color: AppColors.primary.withValues(alpha: 0.04),
               blurRadius: 40,
               offset: const Offset(0, 0),
             ),
@@ -106,9 +107,9 @@ class _GlassCardState extends State<GlassCard>
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Colors.white.withOpacity(0.0),
-                        Colors.white.withOpacity(0.07),
-                        Colors.white.withOpacity(0.0),
+                        Colors.white.withValues(alpha: 0.0),
+                        Colors.white.withValues(alpha: 0.07),
+                        Colors.white.withValues(alpha: 0.0),
                       ],
                     ),
                   ),
@@ -290,15 +291,15 @@ class _IconBadge extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(11),
         border: Border.all(
-          color: color.withOpacity(0.2),
+          color: color.withValues(alpha: 0.2),
           width: 0.75,
         ),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.18),
+            color: color.withValues(alpha: 0.18),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -375,7 +376,7 @@ class _ScoreRingState extends State<_ScoreRing>
         painter: _RingPainter(
           value: _anim.value,
           color: widget.color,
-          trackColor: widget.color.withOpacity(0.1),
+          trackColor: widget.color.withValues(alpha: 0.1),
         ),
         child: SizedBox(
           width: widget.size,
@@ -515,7 +516,7 @@ class _AnimatedProgressBarState extends State<_AnimatedProgressBar>
         return Container(
           height: widget.height,
           decoration: BoxDecoration(
-            color: AppColors.border.withOpacity(0.5),
+            color: AppColors.border.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(widget.height),
           ),
           clipBehavior: Clip.hardEdge,
@@ -526,14 +527,14 @@ class _AnimatedProgressBarState extends State<_AnimatedProgressBar>
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    widget.color.withOpacity(0.7),
+                    widget.color.withValues(alpha: 0.7),
                     widget.color,
                   ],
                 ),
                 borderRadius: BorderRadius.circular(widget.height),
                 boxShadow: [
                   BoxShadow(
-                    color: widget.color.withOpacity(0.6),
+                    color: widget.color.withValues(alpha: 0.6),
                     blurRadius: 8,
                     spreadRadius: 0,
                   ),
@@ -668,12 +669,12 @@ class GainBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppConstants.radiusFull),
-        border: Border.all(color: color.withOpacity(0.25), width: 0.75),
+        border: Border.all(color: color.withValues(alpha: 0.25), width: 0.75),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.12),
+            color: color.withValues(alpha: 0.12),
             blurRadius: 8,
           ),
         ],
@@ -769,8 +770,8 @@ class _PrimaryButtonState extends State<PrimaryButton>
                 ? []
                 : [
                     BoxShadow(
-                      color:
-                          AppColors.primary.withOpacity(_pressed ? 0.2 : 0.45),
+                      color: AppColors.primary
+                          .withValues(alpha: _pressed ? 0.2 : 0.45),
                       blurRadius: _pressed ? 12 : 24,
                       offset: const Offset(0, 6),
                       spreadRadius: _pressed ? 0 : 2,
@@ -797,9 +798,9 @@ class _PrimaryButtonState extends State<PrimaryButton>
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
-                                  Colors.white.withOpacity(0),
-                                  Colors.white.withOpacity(0.08),
-                                  Colors.white.withOpacity(0),
+                                  Colors.white.withValues(alpha: 0),
+                                  Colors.white.withValues(alpha: 0.08),
+                                  Colors.white.withValues(alpha: 0),
                                 ],
                               ),
                             ),
@@ -824,10 +825,10 @@ class _PrimaryButtonState extends State<PrimaryButton>
                             ),
                             const SizedBox(width: 12),
                             Text(
-                              'Simulating…',
+                              AppLocalizations.of(context)!.simulatingBtn,
                               style: AppTextStyles.labelLarge.copyWith(
                                 fontSize: 16,
-                                color: Colors.white.withOpacity(0.7),
+                                color: Colors.white.withValues(alpha: 0.7),
                               ),
                             ),
                           ],
@@ -892,7 +893,7 @@ class SectionHeader extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [color, color.withOpacity(0.3)],
+              colors: [color, color.withValues(alpha: 0.3)],
             ),
             borderRadius: BorderRadius.circular(2),
           ),
@@ -904,9 +905,10 @@ class SectionHeader extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.12),
+              color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(100),
-              border: Border.all(color: color.withOpacity(0.25), width: 0.5),
+              border:
+                  Border.all(color: color.withValues(alpha: 0.25), width: 0.5),
             ),
             child: Text(
               badge!,
@@ -1013,9 +1015,9 @@ class StatusChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: color.withOpacity(0.25), width: 0.75),
+        border: Border.all(color: color.withValues(alpha: 0.25), width: 0.75),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -1029,7 +1031,7 @@ class StatusChip extends StatelessWidget {
                 color: color,
                 boxShadow: [
                   BoxShadow(
-                    color: color.withOpacity(0.5),
+                    color: color.withValues(alpha: 0.5),
                     blurRadius: 4,
                   ),
                 ],
@@ -1072,7 +1074,7 @@ class DividerLine extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Colors.transparent,
-            AppColors.border.withOpacity(opacity),
+            AppColors.border.withValues(alpha: opacity),
             Colors.transparent,
           ],
         ),
