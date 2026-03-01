@@ -1,0 +1,41 @@
+name: future_life
+description: "Life Simulator - See where your daily habits will take you."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+
+  # Navigation
+  go_router: ^14.6.2
+
+  # Charts
+  fl_chart: ^0.69.0
+
+  # Internationalization
+  intl: ^0.20.2
+
+  # Animations
+  flutter_animate: ^4.5.0
+
+  # Typography
+  google_fonts: ^6.2.1
+
+  # Unique IDs
+  uuid: ^4.4.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
