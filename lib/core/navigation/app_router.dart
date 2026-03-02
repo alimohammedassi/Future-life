@@ -5,13 +5,17 @@ import '../../features/simulation/presentation/screens/input_screen.dart';
 import '../../features/simulation/presentation/screens/results_screen.dart';
 import '../../features/simulation/presentation/screens/comparison_screen.dart';
 import '../../features/simulation/presentation/screens/shell_screen.dart';
+import '../../features/auth/presentation/screens/auth_screen.dart';
+import '../../features/auth/presentation/screens/profile_screen.dart';
 
 /// All named route paths for the Life Simulator app.
 abstract class AppRoutes {
   static const String splash = '/';
+  static const String auth = '/auth';
   static const String input = '/simulation';
   static const String results = '/results';
   static const String comparison = '/compare';
+  static const String profile = '/profile';
 }
 
 /// The application [GoRouter] instance.
@@ -19,7 +23,7 @@ final GoRouter appRouter = GoRouter(
   initialLocation: AppRoutes.splash,
   debugLogDiagnostics: false,
   routes: [
-    // ── Splash / Landing ────────────────────────────────────────
+    // ── Splash / Landing ─────────────────────────────────────────────
     GoRoute(
       path: AppRoutes.splash,
       name: 'splash',
@@ -29,7 +33,17 @@ final GoRouter appRouter = GoRouter(
       ),
     ),
 
-    // ── Main Shell (with bottom nav) ────────────────────────────
+    // ── Auth ─────────────────────────────────────────────────────────
+    GoRoute(
+      path: AppRoutes.auth,
+      name: 'auth',
+      pageBuilder: (context, state) => _buildPage(
+        state: state,
+        child: const AuthScreen(),
+      ),
+    ),
+
+    // ── Main Shell (with GNav bottom bar) ─────────────────────────────
     ShellRoute(
       builder: (context, state, child) => ShellScreen(child: child),
       routes: [
@@ -57,6 +71,14 @@ final GoRouter appRouter = GoRouter(
             child: const ComparisonScreen(),
           ),
         ),
+        GoRoute(
+          path: AppRoutes.profile,
+          name: 'profile',
+          pageBuilder: (context, state) => _buildPage(
+            state: state,
+            child: const ProfileScreen(),
+          ),
+        ),
       ],
     ),
   ],
@@ -68,9 +90,9 @@ final GoRouter appRouter = GoRouter(
         children: [
           const Icon(Icons.error_outline, color: Color(0xFFEF4444), size: 64),
           const SizedBox(height: 16),
-          Text(
+          const Text(
             'Page not found',
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontSize: 20,
               fontFamily: 'Inter',

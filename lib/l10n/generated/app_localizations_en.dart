@@ -18,7 +18,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get heroTitleSuffix => 'Future Life';
 
   @override
-  String get heroSubtitle => 'See exactly where your habits lead.\nYour choices, visualized 10 years forward.';
+  String get heroSubtitle =>
+      'See exactly where your habits lead.\nYour choices, visualized 10 years forward.';
 
   @override
   String get engineLabel => 'AI-POWERED LIFE ENGINE';
@@ -246,7 +247,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get compareScenario => 'Compare Another Scenario';
 
   @override
-  String get predictionDisclaimer => 'Predictions are based on current market trends and\nsimulation parameters.';
+  String get predictionDisclaimer =>
+      'Predictions are based on current market trends and\nsimulation parameters.';
 
   @override
   String get optimizedPath => 'SCENARIO: OPTIMIZED PATH';
@@ -292,7 +294,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noSimulationYet => 'No Simulation Yet';
 
   @override
-  String get noSimulationSub => 'Run your first simulation to see your projected future here.';
+  String get noSimulationSub =>
+      'Run your first simulation to see your projected future here.';
 
   @override
   String get comparisonTitle => 'Scenario Comparison';
@@ -350,7 +353,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addScenarioB => 'Add Scenario B';
 
   @override
-  String get setupScenarioBSub => 'Set up a second scenario with different\nhabits to compare outcomes.';
+  String get setupScenarioBSub =>
+      'Set up a second scenario with different\nhabits to compare outcomes.';
 
   @override
   String get setupScenarioBTitle => 'Setup Scenario B';
@@ -391,5 +395,123 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navCompare => 'Compare';
 
   @override
+  String get navProfile => 'Profile';
+
+  @override
   String get simulatingBtn => 'Simulating…';
+
+  @override
+  String get loginTitle => 'Welcome Back';
+
+  @override
+  String get loginSubtitle => 'Continue your journey to success.';
+
+  @override
+  String get signupTitle => 'Create Account';
+
+  @override
+  String get signupSubtitle => 'Start projecting your future today.';
+
+  @override
+  String get emailLabel => 'Email Address';
+
+  @override
+  String get emailHint => 'name@example.com';
+
+  @override
+  String get passwordLabel => 'Password';
+
+  @override
+  String get passwordHint => '••••••••';
+
+  @override
+  String get loginButton => 'Login';
+
+  @override
+  String get signupButton => 'Create Account';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? Sign In';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account? Sign Up';
+
+  @override
+  String get forgotPassword => 'Forgot Password?';
+
+  @override
+  String get authErrorInvalidEmail => 'Please enter a valid email';
+
+  @override
+  String get authErrorShortPassword => 'Password must be at least 6 characters';
+
+  @override
+  String get authErrorShortName => 'Name must be at least 2 characters';
+
+  @override
+  String get authErrorPasswordMismatch => 'Passwords do not match';
+
+  @override
+  String get authErrorEmpty => 'Field cannot be empty';
+
+  @override
+  String get fullNameLabel => 'Full Name';
+
+  @override
+  String get fullNameHint => 'Your full name';
+
+  @override
+  String get confirmPasswordLabel => 'Confirm Password';
+
+  @override
+  String get alreadyHaveAccountPrefix => 'Already have an account? ';
+
+  @override
+  String get dontHaveAccountPrefix => "Don't have an account? ";
+
+  @override
+  String get signInLink => 'Sign In';
+
+  @override
+  String get signUpLink => 'Sign Up';
+
+  @override
+  String get profileTitle => 'My Profile';
+
+  @override
+  String get profileStrategies => 'Strategies';
+
+  @override
+  String get profileInsights => 'Insights';
+
+  @override
+  String get profileScenarios => 'Scenarios';
+
+  @override
+  String get profileSettings => 'Settings';
+
+  @override
+  String get profileAccount => 'Account';
+
+  @override
+  String get profileEditProfile => 'Edit Profile';
+
+  @override
+  String get profileNotifications => 'Notifications';
+
+  @override
+  String get profileChangePassword => 'Change Password';
+
+  @override
+  String get profileLogout => 'Log Out';
+
+  @override
+  String get profileNotLoggedInTitle => "You're not logged in";
+
+  @override
+  String get profileNotLoggedInSub =>
+      'Sign in to view your profile and track your life strategies.';
+
+  @override
+  String get profileLoginBtn => 'Sign In to Continue';
 }

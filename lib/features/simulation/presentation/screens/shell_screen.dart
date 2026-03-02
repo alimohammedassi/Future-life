@@ -1,71 +1,105 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/navigation/app_router.dart';
 
-/// Shell screen that wraps all main routes with the bottom navigation bar.
-class ShellScreen extends StatelessWidget {
+/// Shell screen that wraps all main routes with the GNav bottom navigation bar.
+class ShellScreen extends ConsumerWidget {
   final Widget child;
 
   const ShellScreen({super.key, required this.child});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: child,
-      bottomNavigationBar: _BottomNav(),
+      bottomNavigationBar: const _GNavBar(),
     );
   }
 }
 
-class _BottomNav extends StatelessWidget {
+// ─────────────────────────────────────────────────────────────────────────────
+// _GNavBar — google_nav_bar implementation with 4 tabs
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _GNavBar extends StatelessWidget {
+  const _GNavBar();
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final location = GoRouterState.of(context).uri.toString();
-
-    // Map routes to tab indices
-    int currentIndex = _tabIndexFromLocation(location);
+    final currentIndex = _indexFromLocation(location);
 
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
         border: const Border(
-          top: BorderSide(color: AppColors.border, width: 1),
+          top: BorderSide(color: AppColors.border, width: 0.75),
         ),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x40000000),
-            blurRadius: 20,
+            color: Color(0x50000000),
+            blurRadius: 24,
             offset: Offset(0, -4),
           ),
         ],
       ),
       child: SafeArea(
-        child: SizedBox(
-          height: 64,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _NavItem(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: GNav(
+            // ── Colours ─────────────────────────────────────────
+            backgroundColor: AppColors.surface,
+            color: AppColors.textMuted,
+            activeColor: Colors.white,
+            tabBackgroundColor: AppColors.primary.withValues(alpha: 0.18),
+            // ── Pill shape ──────────────────────────────────────
+            gap: 8,
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+            tabBorderRadius: 16,
+            curve: Curves.easeInOut,
+            duration: const Duration(milliseconds: 350),
+            // ── Icon + text sizing ───────────────────────────────
+            iconSize: 22,
+            textStyle: const TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+            // ── Active tab ────────────────────────────────────────
+            selectedIndex: currentIndex,
+            onTabChange: (index) => _onTap(context, index),
+            // ── Tabs ─────────────────────────────────────────────
+            tabs: [
+              GButton(
                 icon: Icons.auto_graph_rounded,
-                label: l10n.navSimulation,
-                isSelected: currentIndex == 0,
-                onTap: () => context.go(AppRoutes.input),
+                text: l10n.navSimulation,
+                iconActiveColor: AppColors.primaryLight,
+                textColor: Colors.white,
               ),
-              _NavItem(
+              GButton(
                 icon: Icons.leaderboard_rounded,
-                label: l10n.navInsights,
-                isSelected: currentIndex == 1,
-                onTap: () => context.go(AppRoutes.results),
+                text: l10n.navInsights,
+                iconActiveColor: AppColors.accentCyan,
+                textColor: Colors.white,
               ),
-              _NavItem(
+              GButton(
                 icon: Icons.compare_arrows_rounded,
-                label: l10n.navCompare,
-                isSelected: currentIndex == 2,
-                onTap: () => context.go(AppRoutes.comparison),
+                text: l10n.navCompare,
+                iconActiveColor: AppColors.accentGreen,
+                textColor: Colors.white,
+              ),
+              GButton(
+                icon: Icons.person_rounded,
+                text: l10n.navProfile,
+                iconActiveColor: AppColors.accentAmber,
+                textColor: Colors.white,
               ),
             ],
           ),
@@ -74,65 +108,27 @@ class _BottomNav extends StatelessWidget {
     );
   }
 
-  int _tabIndexFromLocation(String location) {
+  int _indexFromLocation(String location) {
     if (location.startsWith(AppRoutes.results)) return 1;
     if (location.startsWith(AppRoutes.comparison)) return 2;
+    if (location.startsWith(AppRoutes.profile)) return 3;
     return 0;
   }
-}
 
-class _NavItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _NavItem({
-    required this.icon,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary.withValues(alpha: 0.12)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              child: Icon(
-                icon,
-                key: ValueKey(isSelected),
-                color: isSelected ? AppColors.primary : AppColors.textMuted,
-                size: 24,
-              ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 10,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                color: isSelected ? AppColors.primary : AppColors.textMuted,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void _onTap(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        context.go(AppRoutes.input);
+        break;
+      case 1:
+        context.go(AppRoutes.results);
+        break;
+      case 2:
+        context.go(AppRoutes.comparison);
+        break;
+      case 3:
+        context.go(AppRoutes.profile);
+        break;
+    }
   }
 }

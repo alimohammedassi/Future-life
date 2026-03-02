@@ -18,7 +18,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get heroTitleSuffix => 'مستقبلك';
 
   @override
-  String get heroSubtitle => 'شاهد إلى أين ستقودك عاداتك اليومية.\nخياراتك، متوقعة لعشر سنوات قادمة.';
+  String get heroSubtitle =>
+      'شاهد إلى أين ستقودك عاداتك اليومية.\nخياراتك، متوقعة لعشر سنوات قادمة.';
 
   @override
   String get engineLabel => 'محرك حياة مدعوم بالذكاء الاصطناعي';
@@ -247,7 +248,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get compareScenario => 'قارن مع سيناريو آخر';
 
   @override
-  String get predictionDisclaimer => 'التوقعات مبنية على اتجاهات السوق الحالية ومعايير المحاكاة.';
+  String get predictionDisclaimer =>
+      'التوقعات مبنية على اتجاهات السوق الحالية ومعايير المحاكاة.';
 
   @override
   String get optimizedPath => 'السيناريو: المسار الأمثل';
@@ -294,7 +296,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noSimulationYet => 'لا توجد محاكاة بعد';
 
   @override
-  String get noSimulationSub => 'قم بإجراء محاكاتك الأولى لترى توقعات مستقبلك هنا.';
+  String get noSimulationSub =>
+      'قم بإجراء محاكاتك الأولى لترى توقعات مستقبلك هنا.';
 
   @override
   String get comparisonTitle => 'مقارنة السيناريوهات';
@@ -352,7 +355,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addScenarioB => 'أضف سيناريو ب';
 
   @override
-  String get setupScenarioBSub => 'قم بإعداد سيناريو ثانٍ بعادات مختلفة لمقارنة النتائج.';
+  String get setupScenarioBSub =>
+      'قم بإعداد سيناريو ثانٍ بعادات مختلفة لمقارنة النتائج.';
 
   @override
   String get setupScenarioBTitle => 'إعداد السيناريو ب';
@@ -394,4 +398,123 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get simulatingBtn => 'جاري المحاكاة...';
+
+  @override
+  String get loginTitle => 'مرحباً بعودتك';
+
+  @override
+  String get loginSubtitle => 'أكمل رحلتك نحو النجاح وتحقيق أهدفك.';
+
+  @override
+  String get signupTitle => 'إنشاء حساب جديد';
+
+  @override
+  String get signupSubtitle => 'ابدأ في رسم ملامح مستقبلك اليوم.';
+
+  @override
+  String get emailLabel => 'البريد الإلكتروني';
+
+  @override
+  String get emailHint => 'example@domain.com';
+
+  @override
+  String get passwordLabel => 'كلمة المرور';
+
+  @override
+  String get passwordHint => '••••••••';
+
+  @override
+  String get loginButton => 'تسجيل الدخول';
+
+  @override
+  String get signupButton => 'إنشاء الحساب';
+
+  @override
+  String get alreadyHaveAccount => 'لديك حساب بالفعل؟ سجل دخولك';
+
+  @override
+  String get dontHaveAccount => 'ليس لديك حساب؟ سجل الآن';
+
+  @override
+  String get forgotPassword => 'نسيت كلمة المرور؟';
+
+  @override
+  String get authErrorInvalidEmail => 'يرجى إدخال بريد إلكتروني صحيح';
+
+  @override
+  String get authErrorShortPassword =>
+      'يجب أن تكون كلمة المرور 6 أحرف على الأقل';
+
+  @override
+  String get authErrorShortName => 'يجب أن يتكون الاسم من حرفين على الأقل';
+
+  @override
+  String get authErrorPasswordMismatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get authErrorEmpty => 'هذا الحقل مطلوب';
+
+  @override
+  String get fullNameLabel => 'الاسم الكامل';
+
+  @override
+  String get fullNameHint => 'اسمك الكامل';
+
+  @override
+  String get confirmPasswordLabel => 'تأكيد كلمة المرور';
+
+  @override
+  String get alreadyHaveAccountPrefix => 'لديك حساب بالفعل؟ ';
+
+  @override
+  String get dontHaveAccountPrefix => 'ليس لديك حساب؟ ';
+
+  @override
+  String get signInLink => 'تسجيل الدخول';
+
+  @override
+  String get signUpLink => 'إنشاء حساب';
+
+  @override
+  String get navProfile => 'الملف الشخصي';
+
+  @override
+  String get profileTitle => 'ملفي الشخصي';
+
+  @override
+  String get profileStrategies => 'الاستراتيجيات';
+
+  @override
+  String get profileInsights => 'الرؤى';
+
+  @override
+  String get profileScenarios => 'السيناريوهات';
+
+  @override
+  String get profileSettings => 'الإعدادات';
+
+  @override
+  String get profileAccount => 'الحساب';
+
+  @override
+  String get profileEditProfile => 'تعديل الملف';
+
+  @override
+  String get profileNotifications => 'الإشعارات';
+
+  @override
+  String get profileChangePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get profileLogout => 'تسجيل الخروج';
+
+  @override
+  String get profileNotLoggedInTitle => 'أنت لم تسجل دخولك بعد';
+
+  @override
+  String get profileNotLoggedInSub =>
+      'سجل دخولك لعرض ملفك الشخصي وتتبع استراتيجياتك.';
+
+  @override
+  String get profileLoginBtn => 'تسجيل الدخول للمتابعة';
 }

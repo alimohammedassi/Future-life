@@ -182,7 +182,7 @@ class _AnimatedBackground extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.primary.withOpacity(0.18),
+                    AppColors.primary.withValues(alpha: 0.18),
                     Colors.transparent,
                   ],
                 ),
@@ -204,7 +204,7 @@ class _AnimatedBackground extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    AppColors.accentCyan.withOpacity(0.08),
+                    AppColors.accentCyan.withValues(alpha: 0.08),
                     Colors.transparent,
                   ],
                 ),
@@ -217,7 +217,7 @@ class _AnimatedBackground extends StatelessWidget {
         Positioned.fill(
           child: CustomPaint(
             painter: _DotGridPainter(
-              color: AppColors.border.withOpacity(0.25),
+              color: AppColors.border.withValues(alpha: 0.25),
             ),
           ),
         ),
@@ -235,7 +235,7 @@ class _AnimatedBackground extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     Colors.transparent,
-                    AppColors.primaryLight.withOpacity(0.04),
+                    AppColors.primaryLight.withValues(alpha: 0.04),
                     Colors.transparent,
                   ],
                 ),
@@ -352,10 +352,10 @@ class _TopBar extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: AppColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(100),
                 border: Border.all(
-                  color: AppColors.primary.withOpacity(0.2),
+                  color: AppColors.primary.withValues(alpha: 0.2),
                   width: 0.75,
                 ),
               ),
@@ -405,7 +405,7 @@ class _HeroSection extends StatelessWidget {
         Text(
           l10n.engineLabel,
           style: AppTextStyles.overline.copyWith(
-            color: AppColors.accentCyan.withOpacity(0.7),
+            color: AppColors.accentCyan.withValues(alpha: 0.7),
             letterSpacing: 3,
             fontSize: 10,
           ),
@@ -476,7 +476,7 @@ class _GlowingIcon extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColors.primary
-                    .withOpacity(0.04 + pulseCtrl.value * 0.02),
+                    .withValues(alpha: 0.04 + pulseCtrl.value * 0.02),
               ),
             ),
             // Outer glow ring 2
@@ -486,7 +486,7 @@ class _GlowingIcon extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColors.primary
-                    .withOpacity(0.07 + pulseCtrl.value * 0.03),
+                    .withValues(alpha: 0.07 + pulseCtrl.value * 0.03),
               ),
             ),
             // Outer glow ring 1
@@ -495,10 +495,10 @@ class _GlowingIcon extends StatelessWidget {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.primary.withOpacity(0.0),
+                color: AppColors.primary.withValues(alpha: 0.0),
                 border: Border.all(
                   color: AppColors.primaryLight
-                      .withOpacity(0.12 + pulseCtrl.value * 0.08),
+                      .withValues(alpha: 0.12 + pulseCtrl.value * 0.08),
                   width: 1,
                 ),
               ),
@@ -512,12 +512,12 @@ class _GlowingIcon extends StatelessWidget {
                 gradient: AppColors.primaryGradient,
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(glow),
+                    color: AppColors.primary.withValues(alpha: glow),
                     blurRadius: 30 + pulseCtrl.value * 10,
                     spreadRadius: 2,
                   ),
                   BoxShadow(
-                    color: AppColors.primaryLight.withOpacity(0.2),
+                    color: AppColors.primaryLight.withValues(alpha: 0.2),
                     blurRadius: 60,
                     spreadRadius: 0,
                   ),
@@ -536,7 +536,7 @@ class _GlowingIcon extends StatelessWidget {
                         borderRadius: BorderRadius.circular(100),
                         gradient: LinearGradient(
                           colors: [
-                            Colors.white.withOpacity(0.25),
+                            Colors.white.withValues(alpha: 0.25),
                             Colors.transparent,
                           ],
                         ),
@@ -572,9 +572,9 @@ class _StatsStrip extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppConstants.radiusL),
-        color: AppColors.primary.withOpacity(0.06),
+        color: AppColors.primary.withValues(alpha: 0.06),
         border: Border.all(
-          color: AppColors.primaryLight.withOpacity(0.1),
+          color: AppColors.primaryLight.withValues(alpha: 0.1),
           width: 0.75,
         ),
       ),
@@ -627,7 +627,7 @@ class _VerticalDivider extends StatelessWidget {
     return Container(
       width: 0.5,
       height: 28,
-      color: AppColors.border.withOpacity(0.5),
+      color: AppColors.border.withValues(alpha: 0.5),
     );
   }
 }
@@ -775,7 +775,7 @@ class _FeatureTile extends StatelessWidget {
                       height: 5,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: data.color.withOpacity(0.5),
+                        color: data.color.withValues(alpha: 0.5),
                       ),
                     ),
                   ],
@@ -798,7 +798,10 @@ class _FeatureTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(2),
                     gradient: LinearGradient(
-                      colors: [data.color.withOpacity(0.7), Colors.transparent],
+                      colors: [
+                        data.color.withValues(alpha: 0.7),
+                        Colors.transparent
+                      ],
                     ),
                   ),
                 ),
@@ -823,9 +826,9 @@ class _TileIcon extends StatelessWidget {
       width: 36,
       height: 36,
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withOpacity(0.2), width: 0.75),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 0.75),
       ),
       child: Icon(icon, color: color, size: 18),
     );
@@ -855,8 +858,8 @@ class _MiniBarChart extends StatelessWidget {
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
                           colors: [
-                            color.withOpacity(0.8),
-                            color.withOpacity(0.3),
+                            color.withValues(alpha: 0.8),
+                            color.withValues(alpha: 0.3),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(2),
@@ -886,7 +889,7 @@ class _CtaSection extends StatelessWidget {
           child: PrimaryButton(
             label: l10n.startSimulation,
             icon: Icons.bolt_rounded,
-            onPressed: () => context.go(AppRoutes.input),
+            onPressed: () => context.go(AppRoutes.auth),
           ),
         )
             .animate(delay: 1350.ms)
@@ -902,13 +905,13 @@ class _CtaSection extends StatelessWidget {
             Icon(
               Icons.lock_outline_rounded,
               size: 11,
-              color: AppColors.textMuted.withOpacity(0.5),
+              color: AppColors.textMuted.withValues(alpha: 0.5),
             ),
             const SizedBox(width: 5),
             Text(
               l10n.engineLabel,
               style: AppTextStyles.overline.copyWith(
-                color: AppColors.textMuted.withOpacity(0.5),
+                color: AppColors.textMuted.withValues(alpha: 0.5),
                 fontSize: 10,
               ),
             ),
