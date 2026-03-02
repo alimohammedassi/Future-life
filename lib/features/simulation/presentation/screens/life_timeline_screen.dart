@@ -526,8 +526,7 @@ class _MetricTabs extends StatelessWidget {
               decoration: BoxDecoration(
                 color:
                     isSelected ? AppColors.primary : AppColors.surfaceElevated,
-                borderRadius:
-                    BorderRadius.circular(AppConstants.radiusFull),
+                borderRadius: BorderRadius.circular(AppConstants.radiusFull),
                 border: isSelected
                     ? null
                     : Border.all(color: AppColors.border, width: 0.5),
@@ -536,8 +535,7 @@ class _MetricTabs extends StatelessWidget {
                 label,
                 style: AppTextStyles.labelSmall.copyWith(
                   color: isSelected ? Colors.white : AppColors.textMuted,
-                  fontWeight:
-                      isSelected ? FontWeight.w700 : FontWeight.w500,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 ),
               ),
             ),
@@ -579,8 +577,7 @@ class _ParallelChart extends StatelessWidget {
   }
 
   double _valueAt(SimulationResult r, int year) {
-    final snap =
-        r.yearlySnapshots.where((s) => s.year == year).firstOrNull;
+    final snap = r.yearlySnapshots.where((s) => s.year == year).firstOrNull;
     switch (metric) {
       case _TimelineMetric.netWorth:
         return (snap?.savings ?? 0) / 1000; // in K
@@ -644,8 +641,7 @@ class _ParallelChart extends StatelessWidget {
                     metric == _TimelineMetric.netWorth
                         ? '${value.toInt()}k'
                         : value.toInt().toString(),
-                    style: AppTextStyles.labelSmall
-                        .copyWith(fontSize: 9),
+                    style: AppTextStyles.labelSmall.copyWith(fontSize: 9),
                   ),
                 ),
               ),
@@ -662,10 +658,10 @@ class _ParallelChart extends StatelessWidget {
                   },
                 ),
               ),
-              rightTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false)),
-              topTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false)),
+              rightTitles:
+                  const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              topTitles:
+                  const AxisTitles(sideTitles: SideTitles(showTitles: false)),
             ),
             lineTouchData: LineTouchData(
               touchTooltipData: LineTouchTooltipData(

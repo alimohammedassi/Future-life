@@ -1135,7 +1135,8 @@ class _CircularStepper extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   value.toStringAsFixed(1),
-                  style: AppTextStyles.displaySmall.copyWith(color: accentColor),
+                  style:
+                      AppTextStyles.displaySmall.copyWith(color: accentColor),
                 ),
               ),
               Text(unit, style: AppTextStyles.labelSmall),

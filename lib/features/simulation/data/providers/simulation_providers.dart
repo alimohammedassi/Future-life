@@ -294,7 +294,8 @@ final historyServiceProvider = Provider<HistoryService>(
   (ref) => HistoryService(),
 );
 
-class HistoryNotifier extends StateNotifier<AsyncValue<List<SimulationResult>>> {
+class HistoryNotifier
+    extends StateNotifier<AsyncValue<List<SimulationResult>>> {
   final HistoryService _service;
 
   HistoryNotifier(this._service) : super(const AsyncValue.loading()) {
@@ -322,7 +323,7 @@ class HistoryNotifier extends StateNotifier<AsyncValue<List<SimulationResult>>> 
   }
 }
 
-final historyProvider = StateNotifierProvider<HistoryNotifier,
-    AsyncValue<List<SimulationResult>>>(
+final historyProvider =
+    StateNotifierProvider<HistoryNotifier, AsyncValue<List<SimulationResult>>>(
   (ref) => HistoryNotifier(ref.read(historyServiceProvider)),
 );

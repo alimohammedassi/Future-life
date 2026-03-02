@@ -293,9 +293,7 @@ class _ResultsDashboard extends StatelessWidget {
                 const SizedBox(height: AppConstants.spacingM),
 
                 // Decision Impact Simulator (Phase 4)
-                const _DecisionImpactSection()
-                    .animate(delay: 440.ms)
-                    .fadeIn(),
+                const _DecisionImpactSection().animate(delay: 440.ms).fadeIn(),
 
                 const SizedBox(height: AppConstants.spacingL),
 
@@ -785,13 +783,10 @@ class _StabilityScoreCard extends StatelessWidget {
                   backgroundColor: color.withValues(alpha: 0.15),
                   valueColor: AlwaysStoppedAnimation<Color>(color),
                   strokeCap: StrokeCap.round,
-                )
-                    .animate(onPlay: (c) => c.forward())
-                    .custom(
+                ).animate(onPlay: (c) => c.forward()).custom(
                       duration: 1200.ms,
                       curve: Curves.easeOutCubic,
-                      builder: (ctx, value, child) =>
-                          CircularProgressIndicator(
+                      builder: (ctx, value, child) => CircularProgressIndicator(
                         value: (score / 100) * value,
                         strokeWidth: 6,
                         backgroundColor: color.withValues(alpha: 0.15),
@@ -1103,8 +1098,7 @@ class _DecisionImpactSectionState
       weeklySkillHours: _skillHours,
     );
     final currentResult = ref.watch(activeResultProvider);
-    final previewResult =
-        SimulationEngine.run(previewInput, name: 'Preview');
+    final previewResult = SimulationEngine.run(previewInput, name: 'Preview');
 
     return GlassCard(
       child: Column(
@@ -1119,8 +1113,7 @@ class _DecisionImpactSectionState
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppColors.accentCyan.withValues(alpha: 0.12),
-                    borderRadius:
-                        BorderRadius.circular(AppConstants.radiusS),
+                    borderRadius: BorderRadius.circular(AppConstants.radiusS),
                   ),
                   child: const Icon(
                     Icons.tune_rounded,
@@ -1172,10 +1165,8 @@ class _DecisionImpactSectionState
                         min: 0.0,
                         max: 0.5,
                         divisions: 10,
-                        displayValue:
-                            '${(_savingPct * 100).toInt()}%',
-                        onChanged: (v) =>
-                            setState(() => _savingPct = v),
+                        displayValue: '${(_savingPct * 100).toInt()}%',
+                        onChanged: (v) => setState(() => _savingPct = v),
                         color: AppColors.primaryLight,
                       ),
 
@@ -1185,10 +1176,8 @@ class _DecisionImpactSectionState
                         min: 0,
                         max: 10,
                         divisions: 20,
-                        displayValue:
-                            '${_studyHours.toStringAsFixed(1)}h',
-                        onChanged: (v) =>
-                            setState(() => _studyHours = v),
+                        displayValue: '${_studyHours.toStringAsFixed(1)}h',
+                        onChanged: (v) => setState(() => _studyHours = v),
                         color: AppColors.accentCyan,
                       ),
 
@@ -1210,10 +1199,8 @@ class _DecisionImpactSectionState
                         min: 0,
                         max: 20,
                         divisions: 20,
-                        displayValue:
-                            '${_skillHours.toStringAsFixed(1)}h/wk',
-                        onChanged: (v) =>
-                            setState(() => _skillHours = v),
+                        displayValue: '${_skillHours.toStringAsFixed(1)}h/wk',
+                        onChanged: (v) => setState(() => _skillHours = v),
                         color: AppColors.accentAmber,
                       ),
 
@@ -1225,8 +1212,7 @@ class _DecisionImpactSectionState
                         divisions: 16,
                         displayValue:
                             '${_socialMediaHours.toStringAsFixed(1)}h/d',
-                        onChanged: (v) =>
-                            setState(() => _socialMediaHours = v),
+                        onChanged: (v) => setState(() => _socialMediaHours = v),
                         color: AppColors.accentRed,
                       ),
 
@@ -1292,8 +1278,7 @@ class _SliderRow extends StatelessWidget {
               inactiveTrackColor: color.withValues(alpha: 0.15),
               thumbColor: color,
               overlayColor: color.withValues(alpha: 0.1),
-              thumbShape:
-                  const RoundSliderThumbShape(enabledThumbRadius: 7),
+              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
               trackHeight: 3,
             ),
             child: Slider(

@@ -60,15 +60,15 @@ class _GNavBar extends StatelessWidget {
             tabBackgroundColor: AppColors.primary.withValues(alpha: 0.18),
             // ── Pill shape ──────────────────────────────────────
             gap: 8,
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-            tabBorderRadius: 16,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            tabBorderRadius: 14,
             curve: Curves.easeInOut,
             duration: const Duration(milliseconds: 350),
             // ── Icon + text sizing ───────────────────────────────
             iconSize: 22,
             textStyle: const TextStyle(
               fontFamily: 'Inter',
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
               color: Colors.white,
             ),

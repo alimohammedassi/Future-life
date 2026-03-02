@@ -12,7 +12,8 @@ class EnergyEngine {
   }) {
     final workoutBonus = (workoutDaysPerWeek / 7) * 30;
     final studyPenalty = dailyStudyHours > 6 ? (dailyStudyHours - 6) * 4.5 : 0;
-    final socialPenalty = socialMediaHours > 3 ? (socialMediaHours - 3) * 3.5 : 0;
+    final socialPenalty =
+        socialMediaHours > 3 ? (socialMediaHours - 3) * 3.5 : 0;
 
     double base = 55 + workoutBonus - studyPenalty - socialPenalty;
 
@@ -32,7 +33,8 @@ class EnergyEngine {
     required double socialMediaHours,
     required double weeklySkillHours,
   }) {
-    final overwork = ((dailyStudyHours + weeklySkillHours / 7) / 16).clamp(0, 1);
+    final overwork =
+        ((dailyStudyHours + weeklySkillHours / 7) / 16).clamp(0, 1);
     final inactivity = (1 - workoutDaysPerWeek / 7);
     final isolation = (socialMediaHours / 10).clamp(0, 1);
 

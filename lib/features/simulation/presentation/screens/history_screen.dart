@@ -79,9 +79,7 @@ class HistoryScreen extends ConsumerWidget {
                                 ),
                               );
                               if (confirmed == true && context.mounted) {
-                                ref
-                                    .read(historyProvider.notifier)
-                                    .clear();
+                                ref.read(historyProvider.notifier).clear();
                               }
                             },
                             child: Text(
@@ -261,7 +259,8 @@ class _HistoryCard extends StatelessWidget {
               ),
               // Life Stability score badge
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: AppColors.primaryGlow,
                   borderRadius: BorderRadius.circular(AppConstants.radiusFull),
