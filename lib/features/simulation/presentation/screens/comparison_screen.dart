@@ -1017,13 +1017,15 @@ class _AddScenarioSheetState extends State<_AddScenarioSheet> {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('New Scenario', style: AppTextStyles.headlineLarge),
-                    Text('Set different habits to compare',
-                        style: AppTextStyles.bodySmall),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('New Scenario', style: AppTextStyles.headlineLarge),
+                      Text('Set different habits to compare',
+                          style: AppTextStyles.bodySmall),
+                    ],
+                  ),
                 ),
               ],
             ),

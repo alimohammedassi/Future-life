@@ -6,17 +6,22 @@ import 'finance_engine.dart';
 import 'health_engine.dart';
 import 'career_engine.dart';
 import 'social_engine.dart';
+import 'energy_engine.dart';
+import 'risk_engine.dart';
 
 class LifeEngine {
   final FinanceEngine finance = FinanceEngine();
   final CareerEngine career = CareerEngine();
   final HealthEngine health = HealthEngine();
   final SocialEngine social = SocialEngine();
+  final EnergyEngine energy = EnergyEngine();
+  final RiskEngine risk = RiskEngine();
 
   SimulationResult simulate(SimulationInput input,
       {String? name, int years = 10}) {
     const uuid = Uuid();
     final snapshots = _buildYearlySnapshots(input, years);
+    final monthlySnaps = _buildMonthlySnapshots(input);
 
     final s1 = _snapshotAt(snapshots, 1);
     final s5 = _snapshotAt(snapshots, 5);
@@ -62,6 +67,53 @@ class LifeEngine {
         4;
     final lifeStrategyScore = avgScore.clamp(0.0, 100.0);
 
+    // Energy scores
+    final energyScore1Y = energy.calculateEnergyLevel(
+      dailyStudyHours: input.dailyStudyHours,
+      workoutDaysPerWeek: input.workoutDaysPerWeek,
+      socialMediaHours: input.socialMediaHours,
+      years: 1,
+    );
+    final energyScore5Y = energy.calculateEnergyLevel(
+      dailyStudyHours: input.dailyStudyHours,
+      workoutDaysPerWeek: input.workoutDaysPerWeek,
+      socialMediaHours: input.socialMediaHours,
+      years: 5,
+    );
+    final energyScore10Y = energy.calculateEnergyLevel(
+      dailyStudyHours: input.dailyStudyHours,
+      workoutDaysPerWeek: input.workoutDaysPerWeek,
+      socialMediaHours: input.socialMediaHours,
+      years: 10,
+    );
+    final burnoutRisk = energy.calculateBurnoutRisk(
+      dailyStudyHours: input.dailyStudyHours,
+      workoutDaysPerWeek: input.workoutDaysPerWeek,
+      socialMediaHours: input.socialMediaHours,
+      weeklySkillHours: input.weeklySkillHours,
+    );
+
+    // Risk scores
+    final financialCollapseRisk = risk.calculateFinancialCollapseRisk(
+      savingPercentage: input.savingPercentage,
+      monthlyIncome: input.monthlyIncome,
+    );
+    final careerStagnationRisk = risk.calculateCareerStagnationRisk(
+      weeklySkillHours: input.weeklySkillHours,
+      certsPerYear: input.certsPerYear,
+    );
+    final energyDepletionRisk = risk.calculateEnergyDepletionRisk(
+      dailyStudyHours: input.dailyStudyHours,
+      workoutDaysPerWeek: input.workoutDaysPerWeek,
+      socialMediaHours: input.socialMediaHours,
+    );
+    final overallRiskIndex = risk.calculateOverallRiskIndex(
+      financialCollapseRisk: financialCollapseRisk,
+      careerStagnationRisk: careerStagnationRisk,
+      burnoutRisk: burnoutRisk,
+      energyDepletionRisk: energyDepletionRisk,
+    );
+
     return SimulationResult(
       id: uuid.v4(),
       name: name ?? 'Scenario',
@@ -85,8 +137,44 @@ class LifeEngine {
       isolationRisk: isolRisk,
       currency: input.currency,
       lifeStrategyScore: lifeStrategyScore,
+      energyScore1Y: energyScore1Y,
+      energyScore5Y: energyScore5Y,
+      energyScore10Y: energyScore10Y,
+      burnoutRisk: burnoutRisk,
+      financialCollapseRisk: financialCollapseRisk,
+      careerStagnationRisk: careerStagnationRisk,
+      energyDepletionRisk: energyDepletionRisk,
+      overallRiskIndex: overallRiskIndex,
       yearlySnapshots: snapshots,
+      monthlySnapshots: monthlySnaps,
     );
+  }
+
+  List<MonthSnapshot> _buildMonthlySnapshots(SimulationInput input) {
+    final snaps = <MonthSnapshot>[];
+    final salaryMult = career.calculateSalaryMultiplier(
+      weeklySkillHours: input.weeklySkillHours,
+      certsPerYear: input.certsPerYear,
+      years: 1,
+    );
+    for (int m = 1; m <= 12; m++) {
+      snaps.add(MonthSnapshot(
+        month: m,
+        savings: finance.calculateProjectedSavingsForMonths(
+          monthlyPayment: input.monthlySavings * salaryMult,
+          annualRate: AppConstants.annualInterestRate,
+          months: m,
+        ),
+        studyHours: input.dailyStudyHours * 30.0 * m,
+        healthScore: (health.calculateHealthScore(
+                  workoutDays: input.workoutDaysPerWeek,
+                  years: 1,
+                ) *
+                (m / 12))
+            .clamp(0, 100),
+      ));
+    }
+    return snaps;
   }
 
   List<YearSnapshot> _buildYearlySnapshots(

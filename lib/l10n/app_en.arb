@@ -223,6 +223,37 @@
   "navInsights": "Insights",
   "navCompare": "Compare",
   "navProfile": "Profile",
+  "navFuture": "Future",
+
+  "timelineTitle": "Parallel Futures",
+  "declinePathLabel": "Decline",
+  "generateFutures": "Generate Futures",
+  "generatingFutures": "Generating futures...",
+  "noFuturesYet": "No Futures Generated",
+  "noFuturesSub": "Run a simulation first, then tap Generate to see your parallel life paths.",
+  "switchPathLabel": "View Path",
+  "allPathsLabel": "All Paths",
+
+  "riskAnalysis": "Risk Analysis",
+  "burnoutRiskLabel": "Burnout",
+  "financialRiskLabel": "Financial",
+  "careerRiskLabel": "Career",
+  "energyRiskLabel": "Energy",
+  "riskLow": "Low",
+  "riskMedium": "Medium",
+  "riskHigh": "High",
+
+  "stabilityScoreLabel": "Life Stability",
+  "decisionImpactTitle": "Decision Impact",
+  "adjustHabitsHint": "Adjust habits to see live projections",
+  "applyImpact": "Apply Changes",
+
+  "historyTitle": "History",
+  "noHistoryYet": "No History Yet",
+  "noHistorySub": "Your past simulations will appear here.",
+  "clearHistory": "Clear History",
+  "energyLevelLabel": "Energy Level",
+  "riskLevelLabel": "Risk Index",
 
   "simulatingBtn": "Simulating…",
 

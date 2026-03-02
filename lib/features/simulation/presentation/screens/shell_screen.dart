@@ -96,9 +96,15 @@ class _GNavBar extends StatelessWidget {
                 textColor: Colors.white,
               ),
               GButton(
+                icon: Icons.timeline_rounded,
+                text: l10n.navFuture,
+                iconActiveColor: AppColors.accentAmber,
+                textColor: Colors.white,
+              ),
+              GButton(
                 icon: Icons.person_rounded,
                 text: l10n.navProfile,
-                iconActiveColor: AppColors.accentAmber,
+                iconActiveColor: AppColors.primaryLight,
                 textColor: Colors.white,
               ),
             ],
@@ -111,7 +117,8 @@ class _GNavBar extends StatelessWidget {
   int _indexFromLocation(String location) {
     if (location.startsWith(AppRoutes.results)) return 1;
     if (location.startsWith(AppRoutes.comparison)) return 2;
-    if (location.startsWith(AppRoutes.profile)) return 3;
+    if (location.startsWith(AppRoutes.future)) return 3;
+    if (location.startsWith(AppRoutes.profile)) return 4;
     return 0;
   }
 
@@ -127,6 +134,9 @@ class _GNavBar extends StatelessWidget {
         context.go(AppRoutes.comparison);
         break;
       case 3:
+        context.go(AppRoutes.future);
+        break;
+      case 4:
         context.go(AppRoutes.profile);
         break;
     }

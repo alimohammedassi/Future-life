@@ -223,6 +223,37 @@
   "navInsights": "الرؤى",
   "navCompare": "المقارنة",
   "navProfile": "الملف الشخصي",
+  "navFuture": "المستقبل",
+
+  "timelineTitle": "مسارات متوازية",
+  "declinePathLabel": "التراجع",
+  "generateFutures": "توليد المسارات",
+  "generatingFutures": "جاري توليد المسارات...",
+  "noFuturesYet": "لم تُولَّد مسارات بعد",
+  "noFuturesSub": "قم بإجراء محاكاة أولاً ثم اضغط توليد لعرض مسارات حياتك المتوازية.",
+  "switchPathLabel": "عرض المسار",
+  "allPathsLabel": "جميع المسارات",
+
+  "riskAnalysis": "تحليل المخاطر",
+  "burnoutRiskLabel": "الإرهاق",
+  "financialRiskLabel": "مالي",
+  "careerRiskLabel": "مهني",
+  "energyRiskLabel": "الطاقة",
+  "riskLow": "منخفض",
+  "riskMedium": "متوسط",
+  "riskHigh": "مرتفع",
+
+  "stabilityScoreLabel": "استقرار الحياة",
+  "decisionImpactTitle": "تأثير القرارات",
+  "adjustHabitsHint": "عدّل العادات لرؤية التوقعات مباشرة",
+  "applyImpact": "تطبيق التغييرات",
+
+  "historyTitle": "السجل",
+  "noHistoryYet": "لا يوجد سجل بعد",
+  "noHistorySub": "ستظهر محاكاتك السابقة هنا.",
+  "clearHistory": "مسح السجل",
+  "energyLevelLabel": "مستوى الطاقة",
+  "riskLevelLabel": "مؤشر المخاطر",
 
   "simulatingBtn": "جاري المحاكاة...",
 

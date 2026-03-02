@@ -517,4 +517,61 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileLoginBtn => 'تسجيل الدخول للمتابعة';
+
+  // ── New Feature Strings ──────────────────────────────────────
+  @override
+  String get navFuture => 'المستقبل';
+  @override
+  String get timelineTitle => 'مسارات متوازية';
+  @override
+  String get declinePathLabel => 'التراجع';
+  @override
+  String get generateFutures => 'توليد المسارات';
+  @override
+  String get generatingFutures => 'جاري توليد المسارات...';
+  @override
+  String get noFuturesYet => 'لم تُولَّد مسارات بعد';
+  @override
+  String get noFuturesSub =>
+      'قم بإجراء محاكاة أولاً ثم اضغط توليد لعرض مسارات حياتك المتوازية.';
+  @override
+  String get switchPathLabel => 'عرض المسار';
+  @override
+  String get allPathsLabel => 'جميع المسارات';
+  @override
+  String get riskAnalysis => 'تحليل المخاطر';
+  @override
+  String get burnoutRiskLabel => 'الإرهاق';
+  @override
+  String get financialRiskLabel => 'مالي';
+  @override
+  String get careerRiskLabel => 'مهني';
+  @override
+  String get energyRiskLabel => 'الطاقة';
+  @override
+  String get riskLow => 'منخفض';
+  @override
+  String get riskMedium => 'متوسط';
+  @override
+  String get riskHigh => 'مرتفع';
+  @override
+  String get stabilityScoreLabel => 'استقرار الحياة';
+  @override
+  String get decisionImpactTitle => 'تأثير القرارات';
+  @override
+  String get adjustHabitsHint => 'عدّل العادات لرؤية التوقعات مباشرة';
+  @override
+  String get applyImpact => 'تطبيق التغييرات';
+  @override
+  String get historyTitle => 'السجل';
+  @override
+  String get noHistoryYet => 'لا يوجد سجل بعد';
+  @override
+  String get noHistorySub => 'ستظهر محاكاتك السابقة هنا.';
+  @override
+  String get clearHistory => 'مسح السجل';
+  @override
+  String get energyLevelLabel => 'مستوى الطاقة';
+  @override
+  String get riskLevelLabel => 'مؤشر المخاطر';
 }

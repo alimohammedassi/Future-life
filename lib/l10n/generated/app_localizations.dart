@@ -911,6 +911,35 @@ abstract class AppLocalizations {
   String get profileNotLoggedInTitle;
   String get profileNotLoggedInSub;
   String get profileLoginBtn;
+
+  // ── New Feature Strings ──────────────────────────────────────
+  String get navFuture;
+  String get timelineTitle;
+  String get declinePathLabel;
+  String get generateFutures;
+  String get generatingFutures;
+  String get noFuturesYet;
+  String get noFuturesSub;
+  String get switchPathLabel;
+  String get allPathsLabel;
+  String get riskAnalysis;
+  String get burnoutRiskLabel;
+  String get financialRiskLabel;
+  String get careerRiskLabel;
+  String get energyRiskLabel;
+  String get riskLow;
+  String get riskMedium;
+  String get riskHigh;
+  String get stabilityScoreLabel;
+  String get decisionImpactTitle;
+  String get adjustHabitsHint;
+  String get applyImpact;
+  String get historyTitle;
+  String get noHistoryYet;
+  String get noHistorySub;
+  String get clearHistory;
+  String get energyLevelLabel;
+  String get riskLevelLabel;
 }
 
 class _AppLocalizationsDelegate

@@ -514,4 +514,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileLoginBtn => 'Sign In to Continue';
+
+  // ── New Feature Strings ──────────────────────────────────────
+  @override
+  String get navFuture => 'Future';
+  @override
+  String get timelineTitle => 'Parallel Futures';
+  @override
+  String get declinePathLabel => 'Decline';
+  @override
+  String get generateFutures => 'Generate Futures';
+  @override
+  String get generatingFutures => 'Generating futures...';
+  @override
+  String get noFuturesYet => 'No Futures Generated';
+  @override
+  String get noFuturesSub =>
+      'Run a simulation first, then tap Generate to see your parallel life paths.';
+  @override
+  String get switchPathLabel => 'View Path';
+  @override
+  String get allPathsLabel => 'All Paths';
+  @override
+  String get riskAnalysis => 'Risk Analysis';
+  @override
+  String get burnoutRiskLabel => 'Burnout';
+  @override
+  String get financialRiskLabel => 'Financial';
+  @override
+  String get careerRiskLabel => 'Career';
+  @override
+  String get energyRiskLabel => 'Energy';
+  @override
+  String get riskLow => 'Low';
+  @override
+  String get riskMedium => 'Medium';
+  @override
+  String get riskHigh => 'High';
+  @override
+  String get stabilityScoreLabel => 'Life Stability';
+  @override
+  String get decisionImpactTitle => 'Decision Impact';
+  @override
+  String get adjustHabitsHint => 'Adjust habits to see live projections';
+  @override
+  String get applyImpact => 'Apply Changes';
+  @override
+  String get historyTitle => 'History';
+  @override
+  String get noHistoryYet => 'No History Yet';
+  @override
+  String get noHistorySub => 'Your past simulations will appear here.';
+  @override
+  String get clearHistory => 'Clear History';
+  @override
+  String get energyLevelLabel => 'Energy Level';
+  @override
+  String get riskLevelLabel => 'Risk Index';
 }

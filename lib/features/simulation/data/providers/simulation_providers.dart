@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/models/simulation_input.dart';
 import '../../domain/models/simulation_result.dart';
 import '../../domain/engine/simulation_engine.dart';
+import '../../domain/engine/scenario_engine.dart';
+import '../services/history_service.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Input State Notifier
@@ -110,6 +113,8 @@ class ScenariosState {
 class ScenariosNotifier extends StateNotifier<ScenariosState> {
   ScenariosNotifier() : super(const ScenariosState());
 
+  final _history = HistoryService();
+
   /// Runs the engine and stores result as the original Scenario A.
   Future<SimulationResult> runScenarioA(
     SimulationInput input, {
@@ -120,6 +125,8 @@ class ScenariosNotifier extends StateNotifier<ScenariosState> {
       await Future.delayed(const Duration(milliseconds: 400));
       final result = SimulationEngine.run(input, name: name);
       state = state.copyWith(scenarioA: result, isRunning: false);
+      // Auto-save to history
+      unawaited(_history.saveResult(result));
       return result;
     } catch (e) {
       state = state.copyWith(isRunning: false, error: 'Simulation failed: $e');
@@ -191,3 +198,131 @@ final activeResultProvider = Provider<SimulationResult?>((ref) {
 final isSimulatingProvider = Provider<bool>((ref) {
   return ref.watch(scenariosProvider).isRunning;
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Parallel Futures (Current • Optimized • Decline)
+// ─────────────────────────────────────────────────────────────────────────────
+
+class ParallelFuturesState {
+  final SimulationResult? currentPath;
+  final SimulationResult? optimizedPath;
+  final SimulationResult? declinePath;
+  final bool isGenerating;
+  final String? error;
+
+  const ParallelFuturesState({
+    this.currentPath,
+    this.optimizedPath,
+    this.declinePath,
+    this.isGenerating = false,
+    this.error,
+  });
+
+  bool get hasData =>
+      currentPath != null && optimizedPath != null && declinePath != null;
+
+  List<SimulationResult> get allPaths => [
+        if (currentPath != null) currentPath!,
+        if (optimizedPath != null) optimizedPath!,
+        if (declinePath != null) declinePath!,
+      ];
+
+  ParallelFuturesState copyWith({
+    SimulationResult? currentPath,
+    SimulationResult? optimizedPath,
+    SimulationResult? declinePath,
+    bool? isGenerating,
+    String? error,
+    bool clearError = false,
+  }) {
+    return ParallelFuturesState(
+      currentPath: currentPath ?? this.currentPath,
+      optimizedPath: optimizedPath ?? this.optimizedPath,
+      declinePath: declinePath ?? this.declinePath,
+      isGenerating: isGenerating ?? this.isGenerating,
+      error: clearError ? null : (error ?? this.error),
+    );
+  }
+}
+
+class ParallelFuturesNotifier extends StateNotifier<ParallelFuturesState> {
+  final _scenario = ScenarioEngine();
+
+  ParallelFuturesNotifier() : super(const ParallelFuturesState());
+
+  /// Generates Current, Optimized, and Decline path simulations.
+  Future<void> generate(SimulationInput input) async {
+    state = state.copyWith(isGenerating: true, clearError: true);
+    try {
+      await Future.delayed(const Duration(milliseconds: 500));
+      final current = SimulationEngine.run(input, name: 'Current Path');
+      final optimized = SimulationEngine.run(
+        _scenario.buildOptimizedInput(input),
+        name: 'Optimized Path',
+      );
+      final decline = SimulationEngine.run(
+        _scenario.buildDeclineInput(input),
+        name: 'Decline Path',
+      );
+      state = ParallelFuturesState(
+        currentPath: current,
+        optimizedPath: optimized,
+        declinePath: decline,
+        isGenerating: false,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isGenerating: false,
+        error: 'Generation failed: $e',
+      );
+    }
+  }
+
+  void clear() => state = const ParallelFuturesState();
+}
+
+final parallelFuturesProvider =
+    StateNotifierProvider<ParallelFuturesNotifier, ParallelFuturesState>(
+  (ref) => ParallelFuturesNotifier(),
+);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Simulation History
+// ─────────────────────────────────────────────────────────────────────────────
+
+final historyServiceProvider = Provider<HistoryService>(
+  (ref) => HistoryService(),
+);
+
+class HistoryNotifier extends StateNotifier<AsyncValue<List<SimulationResult>>> {
+  final HistoryService _service;
+
+  HistoryNotifier(this._service) : super(const AsyncValue.loading()) {
+    loadHistory();
+  }
+
+  Future<void> loadHistory() async {
+    state = const AsyncValue.loading();
+    try {
+      final results = await _service.loadHistory();
+      state = AsyncValue.data(results);
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> save(SimulationResult result) async {
+    await _service.saveResult(result);
+    await loadHistory();
+  }
+
+  Future<void> clear() async {
+    await _service.clearHistory();
+    state = const AsyncValue.data([]);
+  }
+}
+
+final historyProvider = StateNotifierProvider<HistoryNotifier,
+    AsyncValue<List<SimulationResult>>>(
+  (ref) => HistoryNotifier(ref.read(historyServiceProvider)),
+);

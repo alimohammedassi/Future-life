@@ -1,5 +1,34 @@
 import 'dart:convert';
 
+/// Immutable result model for a single month's projection snapshot.
+class MonthSnapshot {
+  final int month; // 1–12
+  final double savings;
+  final double studyHours;
+  final double healthScore;
+
+  const MonthSnapshot({
+    required this.month,
+    required this.savings,
+    required this.studyHours,
+    required this.healthScore,
+  });
+
+  Map<String, dynamic> toMap() => {
+        'month': month,
+        'savings': savings,
+        'studyHours': studyHours,
+        'healthScore': healthScore,
+      };
+
+  factory MonthSnapshot.fromMap(Map<String, dynamic> map) => MonthSnapshot(
+        month: map['month'] as int,
+        savings: (map['savings'] as num).toDouble(),
+        studyHours: (map['studyHours'] as num).toDouble(),
+        healthScore: (map['healthScore'] as num).toDouble(),
+      );
+}
+
 /// Immutable result model for a single year's projection snapshot.
 class YearSnapshot {
   final int year;
@@ -65,8 +94,21 @@ class SimulationResult {
   final String currency;
   final double lifeStrategyScore;
 
+  // ── Energy ────────────────────────────────────────────────────
+  final double energyScore1Y;
+  final double energyScore5Y;
+  final double energyScore10Y;
+  final double burnoutRisk; // 0–1
+
+  // ── Risk ──────────────────────────────────────────────────────
+  final double financialCollapseRisk; // 0–1
+  final double careerStagnationRisk; // 0–1
+  final double energyDepletionRisk; // 0–1
+  final double overallRiskIndex; // 0–100
+
   // ── Chart Data ────────────────────────────────────────────────
   final List<YearSnapshot> yearlySnapshots;
+  final List<MonthSnapshot> monthlySnapshots;
 
   const SimulationResult({
     required this.id,
@@ -90,7 +132,16 @@ class SimulationResult {
     required this.isolationRisk,
     required this.currency,
     required this.lifeStrategyScore,
+    this.energyScore1Y = 50.0,
+    this.energyScore5Y = 50.0,
+    this.energyScore10Y = 50.0,
+    this.burnoutRisk = 0.0,
+    this.financialCollapseRisk = 0.0,
+    this.careerStagnationRisk = 0.0,
+    this.energyDepletionRisk = 0.0,
+    this.overallRiskIndex = 0.0,
     required this.yearlySnapshots,
+    this.monthlySnapshots = const [],
   });
 
   /// Percentage gain from 0→10 years for display as a badge.
@@ -122,7 +173,16 @@ class SimulationResult {
         'isolationRisk': isolationRisk,
         'currency': currency,
         'lifeStrategyScore': lifeStrategyScore,
+        'energyScore1Y': energyScore1Y,
+        'energyScore5Y': energyScore5Y,
+        'energyScore10Y': energyScore10Y,
+        'burnoutRisk': burnoutRisk,
+        'financialCollapseRisk': financialCollapseRisk,
+        'careerStagnationRisk': careerStagnationRisk,
+        'energyDepletionRisk': energyDepletionRisk,
+        'overallRiskIndex': overallRiskIndex,
         'yearlySnapshots': yearlySnapshots.map((s) => s.toMap()).toList(),
+        'monthlySnapshots': monthlySnapshots.map((s) => s.toMap()).toList(),
       };
 
   factory SimulationResult.fromMap(Map<String, dynamic> map) =>
@@ -152,8 +212,22 @@ class SimulationResult {
         currency: map['currency'] as String? ?? 'USD',
         lifeStrategyScore:
             (map['lifeStrategyScore'] as num?)?.toDouble() ?? 0.0,
+        energyScore1Y: (map['energyScore1Y'] as num?)?.toDouble() ?? 50.0,
+        energyScore5Y: (map['energyScore5Y'] as num?)?.toDouble() ?? 50.0,
+        energyScore10Y: (map['energyScore10Y'] as num?)?.toDouble() ?? 50.0,
+        burnoutRisk: (map['burnoutRisk'] as num?)?.toDouble() ?? 0.0,
+        financialCollapseRisk:
+            (map['financialCollapseRisk'] as num?)?.toDouble() ?? 0.0,
+        careerStagnationRisk:
+            (map['careerStagnationRisk'] as num?)?.toDouble() ?? 0.0,
+        energyDepletionRisk:
+            (map['energyDepletionRisk'] as num?)?.toDouble() ?? 0.0,
+        overallRiskIndex: (map['overallRiskIndex'] as num?)?.toDouble() ?? 0.0,
         yearlySnapshots: (map['yearlySnapshots'] as List)
             .map((e) => YearSnapshot.fromMap(e as Map<String, dynamic>))
+            .toList(),
+        monthlySnapshots: (map['monthlySnapshots'] as List? ?? [])
+            .map((e) => MonthSnapshot.fromMap(e as Map<String, dynamic>))
             .toList(),
       );
 

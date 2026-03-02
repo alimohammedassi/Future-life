@@ -397,7 +397,7 @@ class _HeroHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
-      height: 110,
+      height: 120,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppConstants.radiusXL),
         gradient: const LinearGradient(
@@ -464,7 +464,7 @@ class _HeroHeader extends StatelessWidget {
             ),
             // Content
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
               child: Row(
                 children: [
                   Column(
@@ -1126,17 +1126,23 @@ class _CircularStepper extends StatelessWidget {
           onTap: onDecrease,
           color: accentColor,
         ),
-        const SizedBox(width: 16),
-        Column(
-          children: [
-            Text(
-              value.toStringAsFixed(1),
-              style: AppTextStyles.displaySmall.copyWith(color: accentColor),
-            ),
-            Text(unit, style: AppTextStyles.labelSmall),
-          ],
+        const SizedBox(width: 8),
+        Flexible(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  value.toStringAsFixed(1),
+                  style: AppTextStyles.displaySmall.copyWith(color: accentColor),
+                ),
+              ),
+              Text(unit, style: AppTextStyles.labelSmall),
+            ],
+          ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 8),
         _StepButton(
           icon: Icons.add_rounded,
           onTap: onIncrease,

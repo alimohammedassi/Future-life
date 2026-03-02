@@ -6,6 +6,19 @@ class FinanceEngine {
   ///
   /// Formula: FV = PMT × [ (1 + r)^n − 1 ] / r
   /// where r = monthly rate, n = total months
+  /// Future value for N months (fractional year).
+  double calculateProjectedSavingsForMonths({
+    required double monthlyPayment,
+    required double annualRate,
+    required int months,
+  }) {
+    if (monthlyPayment <= 0 || months <= 0) return 0;
+    final monthlyRate = annualRate / AppConstants.compoundsPerYear;
+    final fv =
+        monthlyPayment * (pow(1 + monthlyRate, months) - 1) / monthlyRate;
+    return fv;
+  }
+
   double calculateProjectedSavings({
     required double monthlyPayment,
     required double annualRate,

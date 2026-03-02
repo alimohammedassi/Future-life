@@ -5,6 +5,8 @@ import '../../features/simulation/presentation/screens/input_screen.dart';
 import '../../features/simulation/presentation/screens/results_screen.dart';
 import '../../features/simulation/presentation/screens/comparison_screen.dart';
 import '../../features/simulation/presentation/screens/shell_screen.dart';
+import '../../features/simulation/presentation/screens/life_timeline_screen.dart';
+import '../../features/simulation/presentation/screens/history_screen.dart';
 import '../../features/auth/presentation/screens/auth_screen.dart';
 import '../../features/auth/presentation/screens/profile_screen.dart';
 
@@ -16,6 +18,8 @@ abstract class AppRoutes {
   static const String results = '/results';
   static const String comparison = '/compare';
   static const String profile = '/profile';
+  static const String future = '/future';
+  static const String history = '/history';
 }
 
 /// The application [GoRouter] instance.
@@ -79,7 +83,25 @@ final GoRouter appRouter = GoRouter(
             child: const ProfileScreen(),
           ),
         ),
+        GoRoute(
+          path: AppRoutes.future,
+          name: 'future',
+          pageBuilder: (context, state) => _buildPage(
+            state: state,
+            child: const LifeTimelineScreen(),
+          ),
+        ),
       ],
+    ),
+
+    // ── History (overlay, no bottom bar) ─────────────────────────────
+    GoRoute(
+      path: AppRoutes.history,
+      name: 'history',
+      pageBuilder: (context, state) => _buildPage(
+        state: state,
+        child: const HistoryScreen(),
+      ),
     ),
   ],
   errorBuilder: (context, state) => Scaffold(

@@ -281,32 +281,38 @@ class _TopBar extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // App name wordmark
-        Row(
-          children: [
-            Container(
-              width: 22,
-              height: 22,
-              decoration: BoxDecoration(
-                gradient: AppColors.primaryGradient,
-                borderRadius: BorderRadius.circular(6),
+        Flexible(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 22,
+                height: 22,
+                decoration: BoxDecoration(
+                  gradient: AppColors.primaryGradient,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: const Icon(
+                  Icons.show_chart_rounded,
+                  color: Colors.white,
+                  size: 13,
+                ),
               ),
-              child: const Icon(
-                Icons.show_chart_rounded,
-                color: Colors.white,
-                size: 13,
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  l10n.appTitle.toUpperCase(),
+                  style: AppTextStyles.overline.copyWith(
+                    color: AppColors.textSecondary,
+                    letterSpacing: 3,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              l10n.appTitle.toUpperCase(),
-              style: AppTextStyles.overline.copyWith(
-                color: AppColors.textSecondary,
-                letterSpacing: 3,
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
         // Language switcher + Version badge row
         Row(
