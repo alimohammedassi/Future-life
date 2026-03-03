@@ -36,6 +36,12 @@ dependencies:
   shared_preferences: ^2.5.4
   google_nav_bar: ^5.0.7
 
+  # Network
+  dio: ^5.7.0
+  retrofit: ^4.4.1
+  logger: ^2.4.0
+  flutter_secure_storage: ^9.2.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

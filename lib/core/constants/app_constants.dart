@@ -44,7 +44,10 @@ abstract class AppConstants {
   static const double defaultStudyHours = 2.5;
   static const int defaultWorkoutDays = 4;
 
-  // ── Storage Keys ─────────────────────────────────────────────
+  //── Storage Keys─────────────────────────────────────────────
   static const String scenarioAKey = 'scenario_a';
   static const String scenarioBKey = 'scenario_b';
+
+  //── Backend Configuration─────────────────────────────────────
+  static const String backendBaseUrl = 'http://futurelife.somee.com';
 }

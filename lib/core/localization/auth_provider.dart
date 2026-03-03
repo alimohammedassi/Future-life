@@ -1,16 +1,29 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../auth/auth_api_service.dart';
+import '../auth/auth_storage.dart';
 import 'locale_provider.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
+//─────────────────────────────────────────────────────────────────────────────
 // AuthUser — immutable model holding the signed-in user's data
-// ─────────────────────────────────────────────────────────────────────────────
+//─────────────────────────────────────────────────────────────────────────────
 
 class AuthUser {
+  final String? id;
   final String name;
   final String email;
+  final String? avatar;
+  final DateTime? createdAt;
+  final DateTime? lastLoginAt;
 
-  const AuthUser({required this.name, required this.email});
+  const AuthUser({
+    this.id,
+    required this.name,
+    required this.email,
+    this.avatar,
+    this.createdAt,
+    this.lastLoginAt,
+  });
 
   /// Returns the user's initials (up to 2 chars) for the avatar placeholder.
   String get initials {
@@ -19,6 +32,37 @@ class AuthUser {
       return '${parts.first[0]}${parts.last[0]}'.toUpperCase();
     }
     return name.isNotEmpty ? name[0].toUpperCase() : '?';
+  }
+
+  /// Create AuthUser from UserProfile
+  factory AuthUser.fromProfile(UserProfile profile) {
+    return AuthUser(
+      id: profile.id,
+      name: profile.name,
+      email: profile.email,
+      avatar: profile.avatar,
+      createdAt: profile.createdAt,
+      lastLoginAt: profile.lastLoginAt,
+    );
+  }
+
+  /// Create copy with updated fields
+  AuthUser copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? avatar,
+    DateTime? createdAt,
+    DateTime? lastLoginAt,
+  }) {
+    return AuthUser(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      avatar: avatar ?? this.avatar,
+      createdAt: createdAt ?? this.createdAt,
+      lastLoginAt: lastLoginAt ?? this.lastLoginAt,
+    );
   }
 }
 
@@ -56,53 +100,58 @@ class AuthState {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// AuthNotifier — handles login / register / logout + SharedPrefs persistence
-// ─────────────────────────────────────────────────────────────────────────────
+//─────────────────────────────────────────────────────────────────────────────
+// AuthNotifier — handles login / register / logout + backend API integration
+//─────────────────────────────────────────────────────────────────────────────
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final SharedPreferences _prefs;
-
-  static const _keyIsAuth = 'auth_is_authenticated';
-  static const _keyName = 'auth_user_name';
-  static const _keyEmail = 'auth_user_email';
+  final AuthApiService _authApi = AuthApiService();
 
   AuthNotifier(this._prefs) : super(const AuthState()) {
     _restoreSession();
   }
 
   /// Restore previously persisted session on app start.
-  void _restoreSession() {
-    final isAuth = _prefs.getBool(_keyIsAuth) ?? false;
-    if (isAuth) {
-      final name = _prefs.getString(_keyName) ?? '';
-      final email = _prefs.getString(_keyEmail) ?? '';
-      state = AuthState(
-        isAuthenticated: true,
-        currentUser: AuthUser(name: name, email: email),
-      );
+  void _restoreSession() async {
+    try {
+      final isAuthenticated = await AuthStorage.isAuthenticated();
+      if (isAuthenticated) {
+        // Try to get user profile from backend
+        try {
+          final profile = await _authApi.getProfile();
+          final user = AuthUser.fromProfile(profile);
+          state = AuthState(
+            isAuthenticated: true,
+            currentUser: user,
+          );
+        } catch (e) {
+          // If backend fails, clear local auth state
+          await AuthStorage.clearAll();
+          state = const AuthState();
+        }
+      }
+    } catch (e) {
+      // Ignore errors during startup
+      state = const AuthState();
     }
   }
 
   Future<void> login(String email, String password) async {
     state = state.copyWith(isLoading: true, clearError: true);
 
-    // Simulate network call — replace with real API when ready.
-    await Future.delayed(const Duration(milliseconds: 1500));
-
-    // Mock: any non-empty credentials succeed.
-    if (email.isNotEmpty && password.length >= 6) {
-      final name = email.split('@').first;
-      final user = AuthUser(
-        name: _capitalise(name),
-        email: email,
+    try {
+      final authResponse = await _authApi.login(email, password);
+      final user = AuthUser.fromProfile(authResponse.user);
+      
+      state = AuthState(
+        isAuthenticated: true,
+        currentUser: user,
       );
-      await _persistSession(user);
-      state = AuthState(isAuthenticated: true, currentUser: user);
-    } else {
+    } catch (e) {
       state = state.copyWith(
         isLoading: false,
-        errorMessage: 'Invalid credentials. Please try again.',
+        errorMessage: e.toString(),
       );
     }
   }
@@ -110,34 +159,35 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> register(String name, String email, String password) async {
     state = state.copyWith(isLoading: true, clearError: true);
 
-    await Future.delayed(const Duration(milliseconds: 1500));
-
-    final user = AuthUser(name: name, email: email);
-    await _persistSession(user);
-    state = AuthState(isAuthenticated: true, currentUser: user);
+    try {
+      final authResponse = await _authApi.register(name, email, password);
+      final user = AuthUser.fromProfile(authResponse.user);
+      
+      state = AuthState(
+        isAuthenticated: true,
+        currentUser: user,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: e.toString(),
+      );
+    }
   }
 
   Future<void> logout() async {
-    await _prefs.remove(_keyIsAuth);
-    await _prefs.remove(_keyName);
-    await _prefs.remove(_keyEmail);
-    state = const AuthState();
+    try {
+      await _authApi.logout();
+    } catch (e) {
+      // Ignore logout errors
+    } finally {
+      state = const AuthState();
+    }
   }
 
   // Legacy alias used by old auth_screen.
   Future<void> signUp(String email, String password) =>
       register(email.split('@').first, email, password);
-
-  Future<void> _persistSession(AuthUser user) async {
-    await _prefs.setBool(_keyIsAuth, true);
-    await _prefs.setString(_keyName, user.name);
-    await _prefs.setString(_keyEmail, user.email);
-  }
-
-  String _capitalise(String s) {
-    if (s.isEmpty) return s;
-    return s[0].toUpperCase() + s.substring(1);
-  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

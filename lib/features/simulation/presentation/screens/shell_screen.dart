@@ -59,7 +59,7 @@ class _GNavBar extends StatelessWidget {
             activeColor: Colors.white,
             tabBackgroundColor: AppColors.primary.withValues(alpha: 0.18),
             // ── Pill shape ──────────────────────────────────────
-            gap: 8,
+            gap: 6,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             tabBorderRadius: 14,
             curve: Curves.easeInOut,
