@@ -143,7 +143,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final authResponse = await _authApi.login(email, password);
       final user = AuthUser.fromProfile(authResponse.user);
-      
+
       state = AuthState(
         isAuthenticated: true,
         currentUser: user,
@@ -162,7 +162,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final authResponse = await _authApi.register(name, email, password);
       final user = AuthUser.fromProfile(authResponse.user);
-      
+
       state = AuthState(
         isAuthenticated: true,
         currentUser: user,
@@ -182,6 +182,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // Ignore logout errors
     } finally {
       state = const AuthState();
+    }
+  }
+
+  /// Update the currently signed-in user's profile.
+  Future<void> updateProfile({required String name, String? email}) async {
+    state = state.copyWith(isLoading: true, clearError: true);
+    try {
+      final profile = await _authApi.updateProfile(name: name, email: email);
+      final updatedUser = AuthUser.fromProfile(profile);
+      state = state.copyWith(isLoading: false, currentUser: updatedUser);
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: e.toString(),
+      );
+      rethrow;
     }
   }
 

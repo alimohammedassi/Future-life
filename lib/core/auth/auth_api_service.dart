@@ -133,6 +133,29 @@ class AuthApiService extends BaseApiService {
     final data = _unwrap(response);
     return UserProfile.fromMap(data);
   }
+
+  /// Update user profile — PATCH /auth/profile
+  Future<UserProfile> updateProfile({
+    required String name,
+    String? email,
+  }) async {
+    final token = await AuthStorage.getAccessToken();
+    if (token == null) {
+      throw ApiException(message: 'Not authenticated', statusCode: 401);
+    }
+
+    final body = <String, dynamic>{'fullName': name};
+    if (email != null && email.isNotEmpty) body['email'] = email;
+
+    final response = await patch<Map<String, dynamic>>(
+      '/auth/profile',
+      data: body,
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    final data = _unwrap(response);
+    return UserProfile.fromMap(data);
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

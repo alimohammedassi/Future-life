@@ -9,6 +9,7 @@ import '../../features/simulation/presentation/screens/life_timeline_screen.dart
 import '../../features/simulation/presentation/screens/history_screen.dart';
 import '../../features/auth/presentation/screens/auth_screen.dart';
 import '../../features/auth/presentation/screens/profile_screen.dart';
+import '../../features/simulation/presentation/screens/how_we_calculate_screen.dart';
 
 /// All named route paths for the Life Simulator app.
 abstract class AppRoutes {
@@ -20,6 +21,7 @@ abstract class AppRoutes {
   static const String profile = '/profile';
   static const String future = '/future';
   static const String history = '/history';
+  static const String howWeCalculate = '/how-we-calculate';
 }
 
 /// The application [GoRouter] instance.
@@ -101,6 +103,16 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (context, state) => _buildPage(
         state: state,
         child: const HistoryScreen(),
+      ),
+    ),
+
+    // ── How We Calculate (overlay, no bottom bar) ─────────────────────
+    GoRoute(
+      path: AppRoutes.howWeCalculate,
+      name: 'howWeCalculate',
+      pageBuilder: (context, state) => _buildPage(
+        state: state,
+        child: const HowWeCalculateScreen(),
       ),
     ),
   ],

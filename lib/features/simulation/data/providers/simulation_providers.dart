@@ -5,6 +5,7 @@ import '../../domain/models/simulation_result.dart';
 import '../../domain/engine/simulation_engine.dart';
 import '../../domain/engine/scenario_engine.dart';
 import '../services/history_service.dart';
+import '../services/api/simulation_api_service.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Input State Notifier
@@ -113,9 +114,11 @@ class ScenariosState {
 class ScenariosNotifier extends StateNotifier<ScenariosState> {
   ScenariosNotifier() : super(const ScenariosState());
 
-  final _history = HistoryService();
+  final _localHistory = HistoryService();
+  final _apiService = SimulationApiService();
 
   /// Runs the engine and stores result as the original Scenario A.
+  /// Saves to backend (with local fallback).
   Future<SimulationResult> runScenarioA(
     SimulationInput input, {
     String name = 'Current Habits',
@@ -125,8 +128,7 @@ class ScenariosNotifier extends StateNotifier<ScenariosState> {
       await Future.delayed(const Duration(milliseconds: 400));
       final result = SimulationEngine.run(input, name: name);
       state = state.copyWith(scenarioA: result, isRunning: false);
-      // Auto-save to history
-      unawaited(_history.saveResult(result));
+      unawaited(_saveToBackend(result));
       return result;
     } catch (e) {
       state = state.copyWith(isRunning: false, error: 'Simulation failed: $e');
@@ -161,6 +163,7 @@ class ScenariosNotifier extends StateNotifier<ScenariosState> {
       );
       final updated = [...state.extraScenarios, result];
       state = state.copyWith(extraScenarios: updated, isRunning: false);
+      unawaited(_saveToBackend(result));
       return result;
     } catch (e) {
       state = state.copyWith(isRunning: false, error: 'Simulation failed: $e');
@@ -180,6 +183,17 @@ class ScenariosNotifier extends StateNotifier<ScenariosState> {
   void clearComparison() => state = state.copyWith(extraScenarios: []);
 
   void clearAll() => state = const ScenariosState();
+
+  /// Save result to backend; fall back to local on failure.
+  Future<void> _saveToBackend(SimulationResult result) async {
+    try {
+      await _apiService.saveSimulation(result);
+    } catch (_) {
+      try {
+        await _localHistory.saveResult(result);
+      } catch (_) {}
+    }
+  }
 }
 
 final scenariosProvider =
@@ -296,29 +310,43 @@ final historyServiceProvider = Provider<HistoryService>(
 
 class HistoryNotifier
     extends StateNotifier<AsyncValue<List<SimulationResult>>> {
-  final HistoryService _service;
+  final HistoryService _localService;
+  final SimulationApiService _apiService = SimulationApiService();
 
-  HistoryNotifier(this._service) : super(const AsyncValue.loading()) {
+  HistoryNotifier(this._localService) : super(const AsyncValue.loading()) {
     loadHistory();
   }
 
   Future<void> loadHistory() async {
     state = const AsyncValue.loading();
     try {
-      final results = await _service.loadHistory();
+      // Backend-first
+      final results = await _apiService.getSimulationHistory();
       state = AsyncValue.data(results);
-    } catch (e, st) {
-      state = AsyncValue.error(e, st);
+    } catch (_) {
+      // Local fallback
+      try {
+        final local = await _localService.loadHistory();
+        state = AsyncValue.data(local);
+      } catch (e, st) {
+        state = AsyncValue.error(e, st);
+      }
     }
   }
 
   Future<void> save(SimulationResult result) async {
-    await _service.saveResult(result);
+    try {
+      await _apiService.saveSimulation(result);
+    } catch (_) {
+      await _localService.saveResult(result);
+    }
     await loadHistory();
   }
 
   Future<void> clear() async {
-    await _service.clearHistory();
+    try {
+      await _localService.clearHistory();
+    } catch (_) {}
     state = const AsyncValue.data([]);
   }
 }
@@ -327,3 +355,42 @@ final historyProvider =
     StateNotifierProvider<HistoryNotifier, AsyncValue<List<SimulationResult>>>(
   (ref) => HistoryNotifier(ref.read(historyServiceProvider)),
 );
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Simulation Stats — powers the 3 profile-screen squares
+// ─────────────────────────────────────────────────────────────────────────────
+
+class SimulationStats {
+  final int totalSimulations;
+  final double averageLifeStrategyScore;
+  final String mostUsedCurrency;
+  final double averageSavingPercentage;
+
+  const SimulationStats({
+    this.totalSimulations = 0,
+    this.averageLifeStrategyScore = 0,
+    this.mostUsedCurrency = '',
+    this.averageSavingPercentage = 0,
+  });
+
+  factory SimulationStats.fromMap(Map<String, dynamic> map) {
+    return SimulationStats(
+      totalSimulations: (map['totalSimulations'] as num?)?.toInt() ?? 0,
+      averageLifeStrategyScore:
+          (map['averageLifeStrategyScore'] as num?)?.toDouble() ?? 0,
+      mostUsedCurrency: map['mostUsedCurrency']?.toString() ?? '',
+      averageSavingPercentage:
+          (map['averageSavingPercentage'] as num?)?.toDouble() ?? 0,
+    );
+  }
+}
+
+final simulationStatsProvider = FutureProvider<SimulationStats>((ref) async {
+  try {
+    final api = SimulationApiService();
+    final raw = await api.getSimulationStats();
+    return SimulationStats.fromMap(raw);
+  } catch (_) {
+    return const SimulationStats();
+  }
+});
