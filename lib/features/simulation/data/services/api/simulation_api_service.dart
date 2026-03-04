@@ -1,23 +1,46 @@
+import 'package:dio/dio.dart';
 import '../../../../../core/network/base_api_service.dart';
 import '../../../domain/models/simulation_input.dart';
 import '../../../domain/models/simulation_result.dart';
 
 /// API service for simulation-related endpoints
 class SimulationApiService extends BaseApiService {
-  
+  /// Helper: unwrap the standard {success, data, message} envelope
+  dynamic _unwrap(Response response) {
+    final body = response.data;
+    if (body == null) {
+      throw ApiException(
+          message: 'Empty response from server', statusCode: 500);
+    }
+
+    if (body is Map && body.containsKey('success')) {
+      if (body['success'] == true) {
+        return body['data'];
+      } else {
+        throw ApiException(
+          message: body['message']?.toString() ?? 'Request failed',
+          statusCode: response.statusCode ?? 500,
+        );
+      }
+    }
+
+    return body;
+  }
+
   /// Run simulation on backend
   Future<SimulationResult> runSimulation(SimulationInput input) async {
     try {
-      final response = await post<Map<String, dynamic>>(
+      final response = await post<dynamic>(
         '/api/simulation/run',
         data: input.toMap(),
       );
-      
-      if (response.data != null) {
-        return SimulationResult.fromMap(response.data!);
+
+      final data = _unwrap(response);
+      if (data != null && data is Map<String, dynamic>) {
+        return SimulationResult.fromMap(data);
       } else {
         throw ApiException(
-          message: 'Empty response from server',
+          message: 'Invalid response from server',
           statusCode: 500,
         );
       }
@@ -29,12 +52,13 @@ class SimulationApiService extends BaseApiService {
   /// Get simulation by ID
   Future<SimulationResult> getSimulation(String id) async {
     try {
-      final response = await get<Map<String, dynamic>>(
+      final response = await get<dynamic>(
         '/api/simulation/$id',
       );
-      
-      if (response.data != null) {
-        return SimulationResult.fromMap(response.data!);
+
+      final data = _unwrap(response);
+      if (data != null && data is Map<String, dynamic>) {
+        return SimulationResult.fromMap(data);
       } else {
         throw ApiException(
           message: 'Simulation not found',
@@ -49,13 +73,15 @@ class SimulationApiService extends BaseApiService {
   /// Get user's simulation history
   Future<List<SimulationResult>> getSimulationHistory() async {
     try {
-      final response = await get<List<dynamic>>(
+      final response = await get<dynamic>(
         '/api/simulation/history',
       );
-      
-      if (response.data != null) {
-        return response.data!
-            .map((item) => SimulationResult.fromMap(item as Map<String, dynamic>))
+
+      final data = _unwrap(response);
+      if (data != null && data is List) {
+        return data
+            .map((item) =>
+                SimulationResult.fromMap(item as Map<String, dynamic>))
             .toList();
       } else {
         return [];
@@ -68,13 +94,14 @@ class SimulationApiService extends BaseApiService {
   /// Save simulation result
   Future<SimulationResult> saveSimulation(SimulationResult result) async {
     try {
-      final response = await post<Map<String, dynamic>>(
+      final response = await post<dynamic>(
         '/api/simulation',
-        data: result.toMap(),
+        data: {"name": result.name, "result": result.toMap()},
       );
-      
-      if (response.data != null) {
-        return SimulationResult.fromMap(response.data!);
+
+      final data = _unwrap(response);
+      if (data != null && data is Map<String, dynamic>) {
+        return SimulationResult.fromMap(data);
       } else {
         throw ApiException(
           message: 'Failed to save simulation',
@@ -89,39 +116,48 @@ class SimulationApiService extends BaseApiService {
   /// Delete simulation by ID
   Future<void> deleteSimulation(String id) async {
     try {
-      await delete<void>('/api/simulation/$id');
+      final response = await delete<dynamic>('/api/simulation/$id');
+      _unwrap(response); // Unwrap to check for success: false
     } catch (e) {
-      rethrow;
+      // Endpoint may return a successful response with no data
     }
   }
 
   /// Get simulation statistics
   Future<Map<String, dynamic>> getSimulationStats() async {
     try {
-      final response = await get<Map<String, dynamic>>(
+      final response = await get<dynamic>(
         '/api/simulation/stats',
       );
-      
-      return response.data ?? {};
+
+      final data = _unwrap(response);
+      if (data != null && data is Map<String, dynamic>) {
+        return data;
+      }
+      return {};
     } catch (e) {
       rethrow;
     }
   }
 
   /// Run parallel futures simulation
-  Future<Map<String, SimulationResult>> runParallelFutures(SimulationInput input) async {
+  Future<Map<String, SimulationResult>> runParallelFutures(
+      SimulationInput input) async {
     try {
-      final response = await post<Map<String, dynamic>>(
+      final response = await post<dynamic>(
         '/api/simulation/parallel-futures',
         data: input.toMap(),
       );
-      
-      if (response.data != null) {
-        final data = response.data!;
+
+      final data = _unwrap(response);
+      if (data != null && data is Map<String, dynamic>) {
         return {
-          'current': SimulationResult.fromMap(data['current'] as Map<String, dynamic>),
-          'optimized': SimulationResult.fromMap(data['optimized'] as Map<String, dynamic>),
-          'decline': SimulationResult.fromMap(data['decline'] as Map<String, dynamic>),
+          'current':
+              SimulationResult.fromMap(data['current'] as Map<String, dynamic>),
+          'optimized': SimulationResult.fromMap(
+              data['optimized'] as Map<String, dynamic>),
+          'decline':
+              SimulationResult.fromMap(data['decline'] as Map<String, dynamic>),
         };
       } else {
         throw ApiException(

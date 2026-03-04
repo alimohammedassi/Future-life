@@ -152,7 +152,7 @@ class SimulationResult {
 
   // ── Serialization ─────────────────────────────────────────────
   Map<String, dynamic> toMap() => {
-        'id': id,
+        'id': int.tryParse(id) == null ? 0 : int.parse(id),
         'name': name,
         'createdAt': createdAt.toIso8601String(),
         'savings1Y': savings1Y,
@@ -187,7 +187,7 @@ class SimulationResult {
 
   factory SimulationResult.fromMap(Map<String, dynamic> map) =>
       SimulationResult(
-        id: map['id'] as String,
+        id: map['id']?.toString() ?? '',
         name: map['name'] as String,
         createdAt: DateTime.parse(map['createdAt'] as String),
         savings1Y: (map['savings1Y'] as num).toDouble(),

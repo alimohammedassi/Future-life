@@ -4,7 +4,6 @@ import '../../domain/models/simulation_input.dart';
 import '../../domain/models/simulation_result.dart';
 import '../../domain/engine/simulation_engine.dart';
 import '../../domain/engine/scenario_engine.dart';
-import '../services/history_service.dart';
 import '../services/api/simulation_api_service.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -114,7 +113,6 @@ class ScenariosState {
 class ScenariosNotifier extends StateNotifier<ScenariosState> {
   ScenariosNotifier() : super(const ScenariosState());
 
-  final _localHistory = HistoryService();
   final _apiService = SimulationApiService();
 
   /// Runs the engine and stores result as the original Scenario A.
@@ -184,14 +182,12 @@ class ScenariosNotifier extends StateNotifier<ScenariosState> {
 
   void clearAll() => state = const ScenariosState();
 
-  /// Save result to backend; fall back to local on failure.
+  /// Save result to backend.
   Future<void> _saveToBackend(SimulationResult result) async {
     try {
       await _apiService.saveSimulation(result);
-    } catch (_) {
-      try {
-        await _localHistory.saveResult(result);
-      } catch (_) {}
+    } catch (e) {
+      print('Failed to save simulation to backend: $e');
     }
   }
 }
@@ -304,56 +300,46 @@ final parallelFuturesProvider =
 // Simulation History
 // ─────────────────────────────────────────────────────────────────────────────
 
-final historyServiceProvider = Provider<HistoryService>(
-  (ref) => HistoryService(),
-);
-
 class HistoryNotifier
     extends StateNotifier<AsyncValue<List<SimulationResult>>> {
-  final HistoryService _localService;
   final SimulationApiService _apiService = SimulationApiService();
 
-  HistoryNotifier(this._localService) : super(const AsyncValue.loading()) {
+  HistoryNotifier() : super(const AsyncValue.loading()) {
     loadHistory();
   }
 
   Future<void> loadHistory() async {
     state = const AsyncValue.loading();
     try {
-      // Backend-first
       final results = await _apiService.getSimulationHistory();
       state = AsyncValue.data(results);
-    } catch (_) {
-      // Local fallback
-      try {
-        final local = await _localService.loadHistory();
-        state = AsyncValue.data(local);
-      } catch (e, st) {
-        state = AsyncValue.error(e, st);
-      }
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
     }
   }
 
   Future<void> save(SimulationResult result) async {
     try {
       await _apiService.saveSimulation(result);
-    } catch (_) {
-      await _localService.saveResult(result);
+      await loadHistory();
+    } catch (e) {
+      print('Failed to save to history: $e');
     }
-    await loadHistory();
   }
 
   Future<void> clear() async {
     try {
-      await _localService.clearHistory();
-    } catch (_) {}
-    state = const AsyncValue.data([]);
+      await _apiService.deleteSimulation('all');
+      await loadHistory();
+    } catch (e) {
+      print('Failed to clear history: $e');
+    }
   }
 }
 
 final historyProvider =
     StateNotifierProvider<HistoryNotifier, AsyncValue<List<SimulationResult>>>(
-  (ref) => HistoryNotifier(ref.read(historyServiceProvider)),
+  (ref) => HistoryNotifier(),
 );
 
 // ─────────────────────────────────────────────────────────────────────────────

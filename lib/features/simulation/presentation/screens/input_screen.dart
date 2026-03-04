@@ -366,22 +366,8 @@ class _TopBar extends StatelessWidget {
         bottom: 8,
       ),
       child: Row(children: [
-        _NavBtn(
-            onTap: onBack,
-            child: const Icon(Icons.arrow_back_ios_rounded,
-                color: AppColors.primaryLight, size: 16)),
         const SizedBox(width: AppConstants.spacingM),
-        Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(l10n.inputTitle,
-                  style: AppTextStyles.overline.copyWith(
-                      color: AppColors.primaryLight,
-                      letterSpacing: 2.5,
-                      fontSize: 9)),
-              Text(l10n.inputSubtitle, style: AppTextStyles.headlineSmall),
-            ]),
+     
         const Spacer(),
         _NavBtn(
             onTap: onReset,

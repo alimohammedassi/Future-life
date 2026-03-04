@@ -949,6 +949,13 @@ class _AddScenarioSheetState extends State<_AddScenarioSheet> {
   double _saving = 0.35;
   double _study = 4.0;
   int _workout = 6;
+  String _currency = 'USD';
+  String? _careerField;
+  double _weeklySkillHours = 5.0;
+  int _certsPerYear = 1;
+  double _socialMediaHours = 2.0;
+  double _familyHours = 10.0;
+  double _networkingHours = 2.0;
   bool _isRunning = false;
 
   @override
@@ -1044,9 +1051,53 @@ class _AddScenarioSheetState extends State<_AddScenarioSheet> {
             ),
             const SizedBox(height: AppConstants.spacingM),
 
-            // Income
-            Text(l10n.incomeValueLabel(r'$', _income.toInt()),
-                style: AppTextStyles.labelLarge),
+            // Income & Currency
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                    l10n.incomeValueLabel(
+                        const {
+                              'USD': r'$',
+                              'EGP': 'E£',
+                              'SAR': '﷼',
+                              'AED': 'د.إ',
+                              'KWD': 'د.ك',
+                              'QAR': 'ر.ق'
+                            }[_currency] ??
+                            _currency,
+                        _income.toInt()),
+                    style: AppTextStyles.labelLarge),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                  decoration: BoxDecoration(
+                      color: AppColors.surfaceElevated,
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(
+                          color: AppColors.border.withOpacity(0.6),
+                          width: 0.5)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _currency,
+                      dropdownColor: AppColors.surfaceElevated,
+                      isDense: true,
+                      icon: const Icon(Icons.keyboard_arrow_down_rounded,
+                          color: AppColors.textSecondary, size: 15),
+                      style: AppTextStyles.labelLarge,
+                      items: ['USD', 'EGP', 'SAR', 'AED', 'KWD', 'QAR']
+                          .map((v) => DropdownMenuItem(
+                              value: v,
+                              child: Text(v, style: AppTextStyles.labelLarge)))
+                          .toList(),
+                      onChanged: (v) {
+                        if (v != null) setState(() => _currency = v);
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
             Slider(
               value: _income,
               min: 1000,
@@ -1092,6 +1143,106 @@ class _AddScenarioSheetState extends State<_AddScenarioSheet> {
               onChanged: (v) => setState(() => _workout = v.toInt()),
             ),
 
+            const SizedBox(height: AppConstants.spacingM),
+            Container(height: 1, color: AppColors.border),
+            const SizedBox(height: AppConstants.spacingM),
+
+            Text(l10n.career, style: AppTextStyles.headlineSmall),
+            const SizedBox(height: 8),
+            // Career Field
+            DropdownButtonFormField<String>(
+              value: _careerField ?? l10n.techField,
+              decoration: InputDecoration(
+                labelText: 'Career Field',
+                labelStyle: const TextStyle(color: AppColors.textMuted),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide:
+                      BorderSide(color: AppColors.border.withOpacity(0.5)),
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              ),
+              dropdownColor: AppColors.surfaceElevated,
+              style: AppTextStyles.labelLarge
+                  .copyWith(color: AppColors.textPrimary),
+              items: [
+                l10n.techField,
+                l10n.healthField,
+                l10n.financeField,
+                l10n.artsField,
+                l10n.eduField,
+                l10n.otherField
+              ].map((f) => DropdownMenuItem(value: f, child: Text(f))).toList(),
+              onChanged: (v) => setState(() => _careerField = v),
+            ),
+            const SizedBox(height: 16),
+            // Skill Hours
+            Text('${l10n.weeklySkillDev} (${_weeklySkillHours.toInt()}h/wk)',
+                style: AppTextStyles.labelLarge),
+            Slider(
+              value: _weeklySkillHours,
+              min: 0,
+              max: 40,
+              divisions: 40,
+              activeColor: color,
+              onChanged: (v) => setState(() => _weeklySkillHours = v),
+            ),
+            // Certs
+            Text('${l10n.certsPerYearLabel} (${_certsPerYear})',
+                style: AppTextStyles.labelLarge),
+            Slider(
+              value: _certsPerYear.toDouble(),
+              min: 0,
+              max: 5,
+              divisions: 5,
+              activeColor: color,
+              onChanged: (v) => setState(() => _certsPerYear = v.toInt()),
+            ),
+
+            const SizedBox(height: AppConstants.spacingM),
+            Container(height: 1, color: AppColors.border),
+            const SizedBox(height: AppConstants.spacingM),
+
+            Text(l10n.social, style: AppTextStyles.headlineSmall),
+            const SizedBox(height: 16),
+            // Social Media
+            Text(
+                '${l10n.socialMedia} (${_socialMediaHours.toStringAsFixed(1)}h/day)',
+                style: AppTextStyles.labelLarge),
+            Slider(
+              value: _socialMediaHours,
+              min: 0,
+              max: 10,
+              divisions: 20,
+              activeColor: color,
+              onChanged: (v) => setState(() => _socialMediaHours = v),
+            ),
+            // Family
+            Text('${l10n.familyFriends} (${_familyHours.toInt()}h/wk)',
+                style: AppTextStyles.labelLarge),
+            Slider(
+              value: _familyHours,
+              min: 0,
+              max: 40,
+              divisions: 40,
+              activeColor: color,
+              onChanged: (v) => setState(() => _familyHours = v),
+            ),
+            // Networking
+            Text('${l10n.networking} (${_networkingHours.toInt()}h/wk)',
+                style: AppTextStyles.labelLarge),
+            Slider(
+              value: _networkingHours,
+              min: 0,
+              max: 20,
+              divisions: 20,
+              activeColor: color,
+              onChanged: (v) => setState(() => _networkingHours = v),
+            ),
+
             const SizedBox(height: AppConstants.spacingL),
             SizedBox(
               width: double.infinity,
@@ -1106,13 +1257,13 @@ class _AddScenarioSheetState extends State<_AddScenarioSheet> {
                     savingPercentage: _saving,
                     dailyStudyHours: _study,
                     workoutDaysPerWeek: _workout,
-                    currency: 'USD',
-                    careerField: l10n.techField,
-                    weeklySkillHours: 5.0,
-                    certsPerYear: 1,
-                    socialMediaHours: 2.0,
-                    familyHours: 10.0,
-                    networkingHours: 2.0,
+                    currency: _currency,
+                    careerField: _careerField ?? l10n.techField,
+                    weeklySkillHours: _weeklySkillHours,
+                    certsPerYear: _certsPerYear,
+                    socialMediaHours: _socialMediaHours,
+                    familyHours: _familyHours,
+                    networkingHours: _networkingHours,
                   );
                   await widget.onRun(
                     input,

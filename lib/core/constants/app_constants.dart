@@ -49,5 +49,5 @@ abstract class AppConstants {
   static const String scenarioBKey = 'scenario_b';
 
   //── Backend Configuration─────────────────────────────────────
-  static const String backendBaseUrl = 'http://futurelife.somee.com';
+  static const String backendBaseUrl = 'http://www.futurelife.somee.com';
 }
