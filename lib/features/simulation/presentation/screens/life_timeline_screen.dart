@@ -67,19 +67,7 @@ class _LifeTimelineScreenState extends ConsumerState<LifeTimelineScreen> {
                 Text(l10n.timelineTitle, style: AppTextStyles.headlineSmall),
               ],
             ),
-            actions: [
-              if (scenarios.scenarioA != null)
-                Padding(
-                  padding: const EdgeInsets.only(right: AppConstants.spacingM),
-                  child: GestureDetector(
-                    onTap: () => context.push('/history'),
-                    child: const Icon(
-                      Icons.history_rounded,
-                      color: AppColors.textMuted,
-                    ),
-                  ),
-                ),
-            ],
+            actions: [],
           ),
 
           // ── Content ──────────────────────────────────────────────

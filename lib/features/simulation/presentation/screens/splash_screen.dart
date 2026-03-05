@@ -9,7 +9,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/navigation/app_router.dart';
-import '../../../../core/auth/auth_storage.dart';
 import '../widgets/shared_widgets.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -48,18 +47,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       vsync: this,
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
-
-    // Check if user is already logged in and skip to home
-    _checkAuthAndRedirect();
-  }
-
-  Future<void> _checkAuthAndRedirect() async {
-    final isLoggedIn = await AuthStorage.isAuthenticated();
-    if (isLoggedIn && mounted) {
-      // Small delay so splash animations initialise before navigation
-      await Future.delayed(const Duration(milliseconds: 300));
-      if (mounted) context.go(AppRoutes.input);
-    }
   }
 
   @override

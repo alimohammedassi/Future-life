@@ -1,8 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../auth/auth_api_service.dart';
 import '../auth/auth_storage.dart';
-import 'locale_provider.dart';
 
 //─────────────────────────────────────────────────────────────────────────────
 // AuthUser — immutable model holding the signed-in user's data
@@ -105,10 +104,9 @@ class AuthState {
 //─────────────────────────────────────────────────────────────────────────────
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  final SharedPreferences _prefs;
   final AuthApiService _authApi = AuthApiService();
 
-  AuthNotifier(this._prefs) : super(const AuthState()) {
+  AuthNotifier() : super(const AuthState()) {
     _restoreSession();
   }
 
@@ -178,10 +176,62 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> logout() async {
     try {
       await _authApi.logout();
+      // Also sign out of Google if the session was via Google
+      await GoogleSignIn().signOut();
     } catch (e) {
       // Ignore logout errors
     } finally {
       state = const AuthState();
+    }
+  }
+
+  /// Signs the user in with Google, exchanges the ID token for an internal JWT.
+  Future<void> googleLogin() async {
+    state = state.copyWith(isLoading: true, clearError: true);
+
+    final googleSignIn = GoogleSignIn(
+      // We use serverClientId to get an idToken to send to our custom backend.
+      // ⚠️ IMPORTANT: This MUST be a Web Client ID, not an Android Client ID!
+      serverClientId: '423415044294-i48eb0i5lllb48pcvfr79fj8i285m3n2.apps.googleusercontent.com',
+      scopes: ['email', 'profile'],
+    );
+
+    try {
+      // Trigger account picker; returns null if the user cancels.
+      final googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        // User cancelled — reset loading without showing an error.
+        state = state.copyWith(isLoading: false);
+        return;
+      }
+
+      final googleAuth = await googleUser.authentication;
+      final idToken = googleAuth.idToken;
+
+      if (idToken == null) {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'Google sign-in failed: no ID token received.',
+        );
+        return;
+      }
+
+      // Exchange Google ID token for the app's internal JWT.
+      final authResponse = await _authApi.googleLogin(idToken);
+      final user = AuthUser.fromProfile(authResponse.user);
+
+      // Google token is NOT stored — only the backend JWT is persisted.
+      await googleSignIn.signOut();
+
+      state = AuthState(
+        isAuthenticated: true,
+        currentUser: user,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: e.toString(),
+      );
     }
   }
 
@@ -211,6 +261,5 @@ class AuthNotifier extends StateNotifier<AuthState> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
-  return AuthNotifier(prefs);
+  return AuthNotifier();
 });

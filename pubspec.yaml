@@ -42,6 +42,11 @@ dependencies:
   logger: ^2.4.0
   flutter_secure_storage: ^9.2.2
 
+  # Google Sign-In
+  google_sign_in: ^6.2.1
+  flutter_native_splash: ^2.4.7
+  flutter_launcher_icons: ^0.14.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -51,6 +56,9 @@ flutter:
   uses-material-design: true
   generate: true
 
+  assets:
+    - images/
+
   fonts:
     - family: Poppins
       fonts:
@@ -59,3 +67,25 @@ flutter:
     - family: Cairo
       fonts:
         - asset: fonts/Cairo-Regular.ttf
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/launcher_icon/icon.png"
+  adaptive_icon_background: "#0A0B10"
+  adaptive_icon_foreground: "assets/launcher_icon/icon.png"
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "assets/launcher_icon/icon.png"
+
+flutter_native_splash:
+  color: "#0A0B10" # AppColors.background equivalent
+  image: "assets/launcher_icon/splash.png"
+  android_12:
+    image: "assets/launcher_icon/splash.png"
+    icon_background_color: "#0A0B10"
+  android: true
+  ios: true
+  web: false

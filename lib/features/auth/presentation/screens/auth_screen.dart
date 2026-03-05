@@ -76,8 +76,13 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
     }
 
     if (mounted && ref.read(authProvider).isAuthenticated) {
-      // ✅ Always land on Home (index 0) after login.
-      // Profile is reachable only via the bottom navigation tab.
+      context.go(AppRoutes.input);
+    }
+  }
+
+  Future<void> _googleSignIn() async {
+    await ref.read(authProvider.notifier).googleLogin();
+    if (mounted && ref.read(authProvider).isAuthenticated) {
       context.go(AppRoutes.input);
     }
   }
@@ -317,6 +322,45 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
                               onPressed: _submit,
                               isLoading: authState.isLoading,
                             ),
+
+                            // ── OR Divider ─────────────────────────────
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Divider(
+                                    color:
+                                        AppColors.border.withValues(alpha: 0.5),
+                                    thickness: 1,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  child: Text(
+                                    'OR',
+                                    style: AppTextStyles.overline.copyWith(
+                                      color: AppColors.textMuted,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Divider(
+                                    color:
+                                        AppColors.border.withValues(alpha: 0.5),
+                                    thickness: 1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+
+                            // ── Google Button ──────────────────────────
+                            _GoogleSignInButton(
+                              onPressed:
+                                  authState.isLoading ? null : _googleSignIn,
+                            ),
                           ],
                         ),
                       ),
@@ -506,4 +550,94 @@ class _GlowOrb extends StatelessWidget {
       ),
     );
   }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// _GoogleSignInButton
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _GoogleSignInButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+  const _GoogleSignInButton({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 52,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: const Color(0xFF3C4043),
+          side: const BorderSide(color: Color(0xFFDADCE0), width: 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          elevation: 0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Google logo — painted with four official colors
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: CustomPaint(painter: _GoogleLogoPainter()),
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              'Continue with Google',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF3C4043),
+                letterSpacing: 0.2,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Paints the Google 'G' logo using the four official brand colours.
+class _GoogleLogoPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final cx = size.width / 2;
+    final cy = size.height / 2;
+    final r = size.width / 2;
+
+    // Clipping circle
+    canvas.clipPath(
+        Path()..addOval(Rect.fromCircle(center: Offset(cx, cy), radius: r)));
+
+    // White background
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height),
+        Paint()..color = Colors.white);
+
+    // Blue arc (top-right)
+    canvas.drawArc(Rect.fromCircle(center: Offset(cx, cy), radius: r), -1.05,
+        1.55, true, Paint()..color = const Color(0xFF4285F4));
+
+    // Red arc (top-left)
+    canvas.drawArc(Rect.fromCircle(center: Offset(cx, cy), radius: r), -2.70,
+        1.65, true, Paint()..color = const Color(0xFFEA4335));
+
+    // Yellow arc (bottom-left)
+    canvas.drawArc(Rect.fromCircle(center: Offset(cx, cy), radius: r), 2.00,
+        1.22, true, Paint()..color = const Color(0xFFFBBC05));
+
+    // Green arc (bottom-right)
+    canvas.drawArc(Rect.fromCircle(center: Offset(cx, cy), radius: r), -0.52,
+        1.57, true, Paint()..color = const Color(0xFF34A853));
+
+    // Inner white circle (cutout)
+    canvas.drawCircle(Offset(cx, cy), r * 0.60, Paint()..color = Colors.white);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

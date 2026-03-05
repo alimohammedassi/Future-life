@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/simulation/presentation/screens/launch_screen.dart';
 import '../../features/simulation/presentation/screens/splash_screen.dart';
 import '../../features/simulation/presentation/screens/input_screen.dart';
 import '../../features/simulation/presentation/screens/results_screen.dart';
@@ -13,7 +14,8 @@ import '../../features/simulation/presentation/screens/how_we_calculate_screen.d
 
 /// All named route paths for the Life Simulator app.
 abstract class AppRoutes {
-  static const String splash = '/';
+  static const String launch = '/';
+  static const String splash = '/splash';
   static const String auth = '/auth';
   static const String input = '/simulation';
   static const String results = '/results';
@@ -26,10 +28,20 @@ abstract class AppRoutes {
 
 /// The application [GoRouter] instance.
 final GoRouter appRouter = GoRouter(
-  initialLocation: AppRoutes.splash,
+  initialLocation: AppRoutes.launch,
   debugLogDiagnostics: false,
   routes: [
-    // ── Splash / Landing ─────────────────────────────────────────────
+    // ── Launch (pre-splash logo animation) ───────────────────────────
+    GoRoute(
+      path: AppRoutes.launch,
+      name: 'launch',
+      pageBuilder: (context, state) => _buildPage(
+        state: state,
+        child: const LaunchScreen(),
+      ),
+    ),
+
+    // ── Splash / Landing (shown only when logged out) ─────────────────
     GoRoute(
       path: AppRoutes.splash,
       name: 'splash',

@@ -161,6 +161,14 @@ class ProfileScreen extends ConsumerWidget {
                                 showDivider: true,
                               ),
                               _SettingTile(
+                                icon: Icons.history_rounded,
+                                label: l10n.historyTitle,
+                                subtitle: 'View past simulations',
+                                iconColor: AppColors.primaryLight,
+                                onTap: () => context.push(AppRoutes.history),
+                                showDivider: true,
+                              ),
+                              _SettingTile(
                                 icon: Icons.analytics_rounded,
                                 label: 'How We Calculate',
                                 subtitle: 'Learn about our methodology',

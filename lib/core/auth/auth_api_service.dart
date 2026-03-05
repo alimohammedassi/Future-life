@@ -156,6 +156,28 @@ class AuthApiService extends BaseApiService {
     final data = _unwrap(response);
     return UserProfile.fromMap(data);
   }
+
+  /// Google Sign-In — POST /auth/google
+  /// Sends the Google ID token and gets back an internal JWT.
+  Future<AuthResponse> googleLogin(String idToken) async {
+    final response = await post<Map<String, dynamic>>(
+      '/auth/google',
+      data: {'idToken': idToken},
+    );
+
+    final data = _unwrap(response);
+    final authData = AuthResponse.fromMap(data);
+
+    // Persist only the internal JWT — never the Google token
+    await AuthStorage.saveAccessToken(authData.accessToken);
+    if (authData.refreshToken != null) {
+      await AuthStorage.saveRefreshToken(authData.refreshToken!);
+    }
+    await AuthStorage.saveUserId(authData.user.id);
+    await AuthStorage.saveEmail(authData.user.email);
+
+    return authData;
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
